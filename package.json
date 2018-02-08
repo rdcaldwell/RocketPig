@@ -2,6 +2,10 @@
   "name": "rocketpig",
   "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+    "node": "7.4.0",
+    "npm": "4.0.5"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng build && node server.js",
@@ -13,6 +17,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cli": "1.6.5",
     "@angular/animations": "^5.2.0",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
