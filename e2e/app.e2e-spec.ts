@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('flight-scheduler App', () => {
+describe('rocketpig App', () => {
   let page: AppPage;
 
   beforeEach(() => {

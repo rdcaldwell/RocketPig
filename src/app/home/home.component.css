@@ -1,0 +1,12 @@
+section {
+    height: 600px;
+    background-image: url("/assets/img/travel.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.jumbotron {
+    margin-top: 50px;
+}
