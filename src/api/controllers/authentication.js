@@ -1,9 +1,6 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
 var Customer = mongoose.model('Customer');
-var log4js = require('log4js');
-var logger = log4js.getLogger();
-logger.level = 'debug';
 
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
@@ -26,7 +23,7 @@ module.exports.register = function(req, res) {
       "token" : token
     });
   });
-  logger.info(customer.username + " registered");
+  console.log(customer.username + " registered");
 };
 
 module.exports.login = function(req, res) {

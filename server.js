@@ -5,9 +5,6 @@ const BODY_PARSER = require('body-parser');
 const SERVER = EXPRESS();
 const PORT = process.env.PORT || '3000';
 const passport = require('passport');
-var log4js = require('log4js');
-var logger = log4js.getLogger();
-logger.level = 'debug';
 
 require('./src/api/models/db');
 require('./src/api/config/passport');
@@ -30,4 +27,4 @@ SERVER.get('*', (req, res) => {
 });
 SERVER.set('port', PORT);
 
-HTTP.createServer(SERVER).listen(PORT, () => logger.info("API running on localhost: " + PORT));
+HTTP.createServer(SERVER).listen(PORT, () => console.log("API running on localhost: " + PORT));
