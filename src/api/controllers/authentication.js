@@ -37,8 +37,6 @@ module.exports.login = function(req, res) {
       return;
     }
 
-    console.log(customer.username);
-
     // If a user is found
     if(customer){
       token = customer.generateJwt();
