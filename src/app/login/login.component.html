@@ -1,15 +1,18 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <form (submit)="login()">
-        <div class="form-group">
-          <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="credentials.username">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="credentials.password">
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
+    <div class="row">
+      <div class="col-md-6">
+        <section class="loginCard">
+          <h1>Login</h1>
+          <form (submit)="login()">
+            <div class="form-group">
+              <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="credentials.username">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="credentials.password">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+        </section>
+      </div>
     </div>
-  </div>
 </div>
