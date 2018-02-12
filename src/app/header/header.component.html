@@ -13,15 +13,15 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" routerLink="/flights">Flights</a>
-          </li>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav ml-auto">
         <li *ngIf="!authenticationService.isLoggedIn()" class="nav-item">
           <a class="nav-link" routerLink="/register">Register</a>
         </li>
         <li *ngIf="!authenticationService.isLoggedIn()" class="nav-item">
           <a class="nav-link" routerLink="/login">Login</a>
         </li>
-      </ul>
-      <ul class="nav navbar-nav ml-auto">
         <li *ngIf="authenticationService.isLoggedIn()" class="nav-item ml-auto">
           <a class="nav-link" [routerLink]="['/profile', authenticationService.getCustomer().user ]">Hello, {{ authenticationService.getCustomer().user }}</a>
         </li>
