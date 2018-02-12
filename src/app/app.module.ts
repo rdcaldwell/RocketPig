@@ -13,12 +13,18 @@ import { ActivateService } from './activate.service';
 import { ProfileComponent } from './profile/profile.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { HistoryComponent } from './history/history.component';
+import { OrderPreviewComponent } from './order-preview/order-preview.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [ActivateService] }
+  { path: 'flights', component: FlightsComponent },
+  { path: 'order-preview/:id', component: OrderPreviewComponent },
+  { path: 'invoice/:id', component: ConfirmationComponent },
+  { path: 'profile/:username', component: ProfileComponent, canActivate: [ActivateService] },
 ];
 
 @NgModule({
@@ -29,7 +35,10 @@ const routes: Routes = [
     LoginComponent,
     ProfileComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    ConfirmationComponent,
+    HistoryComponent,
+    OrderPreviewComponent
   ],
   imports: [
     BrowserModule,

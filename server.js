@@ -3,7 +3,7 @@ const PATH = require('path');
 const HTTP = require('http');
 const BODY_PARSER = require('body-parser');
 const SERVER = EXPRESS();
-const PORT = process.env.PORT || '3000';
+const PORT = process.env.PORT || '3333';
 const passport = require('passport');
 
 require('./src/api/models/db');

@@ -28,7 +28,6 @@ export interface TokenPayload {
 @Injectable()
 export class AuthenticationService {
   private token: string;
-
   constructor(private http: HttpClient, private router: Router) {}
 
   private saveToken(token: string): void {

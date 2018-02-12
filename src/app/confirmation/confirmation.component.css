@@ -1,4 +1,4 @@
-.flightCard {
+.flightCard, .travelerCard, .orderCard {
     background-color: #f4f3f4;
     margin: auto;
     border: 1px solid #c0c5c8;
@@ -6,12 +6,8 @@
     margin-top: 10px;
 }
 
-.searchCard {
-    background-color: #f4f3f4;
-    margin: auto;
-    border: 1px solid #c0c5c8;
-    padding: 45px;
-    margin-top: 10px;
+.orderCard {
+    margin-bottom: 25px;
 }
 
 .trip-time{
@@ -22,7 +18,6 @@
     justify-content: center;
     position: relative;
 }
-
 .trip-stops{
     font-size: 12px;
     font-weight: 300;

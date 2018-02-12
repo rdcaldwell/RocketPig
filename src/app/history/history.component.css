@@ -1,3 +1,8 @@
+table {
+    width:100%;
+    margin-top:20px;
+}
+
 .container {
     background-color: #f4f3f4;
     margin: auto;
