@@ -1,18 +1,25 @@
-<div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <section class="loginCard">
-          <h1>Login</h1>
-          <form (submit)="login()">
-            <div class="form-group">
-              <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="credentials.username">
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="credentials.password">
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-          </form>
-        </section>
-      </div>
-    </div>
-</div>
+
+
+          <div id="loginModal" class="modal" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title">Login</h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <form (submit)="login()">
+                          <div class="form-group">
+                            <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="credentials.username">
+                          </div>
+                          <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="credentials.password">
+                          </div>
+                          <button type="submit" class="btn btn-primary">Login</button>
+                      </form>                  
+                  </div>
+                </div>
+              </div>
+          </div>

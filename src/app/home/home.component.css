@@ -15,3 +15,7 @@ section {
     padding: 45px;
     margin-top: 50px;
 }
+
+.btn-primary {
+    width:100%;
+}

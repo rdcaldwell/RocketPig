@@ -9,18 +9,18 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/">Home</a>
+          <a class="nav-link" routerLink="/">Home <i class="fas fa-home"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" routerLink="/flights">Flights</a>
+            <a class="nav-link" routerLink="/flights">Flights <i class="fas fa-plane"></i></a>
         </li>
       </ul>
       <ul class="nav navbar-nav ml-auto">
         <li *ngIf="!authenticationService.isLoggedIn()" class="nav-item">
-          <a class="nav-link" routerLink="/register">Register</a>
+          <a class="nav-link" routerLink="/register">Register <i class="fas fa-user-plus"></i></a>
         </li>
         <li *ngIf="!authenticationService.isLoggedIn()" class="nav-item">
-          <a class="nav-link" routerLink="/login">Login</a>
+          <a class="nav-link" data-toggle="modal" data-target="#loginModal">Login <i class="fas fa-sign-in-alt"></i></a>
         </li>
         <li *ngIf="authenticationService.isLoggedIn()" class="nav-item ml-auto">
           <a class="nav-link" [routerLink]="['/profile', authenticationService.getCustomer().user ]">Hello, {{ authenticationService.getCustomer().user }}</a>
