@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
 import { Router } from '@angular/router';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -17,13 +17,10 @@ export class LoginComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService,
               private router: Router) { }
 
-  ngOnInit() {
-    $('#myModal').on('shown.bs.modal', function () {
-      $('#myInput').trigger('focus')
-    })
-   }
+  ngOnInit() {}
 
   login() {
+    $("#loginModal").modal('hide');
     this.authenticationService.login(this.credentials).subscribe(() => {
       this.router.navigateByUrl(`/profile/${this.credentials.username}`);
     }, (err) => {

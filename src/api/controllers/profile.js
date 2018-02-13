@@ -9,7 +9,6 @@ module.exports.profileRead = function(req, res) {
     });
   } else {
     Customer.findById(req.payload._id).exec(function(err, customer) {
-        console.log("customer found: " + customer);
         res.status(200).json(customer);
     });
   }
