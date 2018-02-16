@@ -13,7 +13,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev": "ng serve --proxy-config proxy.json"
+    "angular": "ng serve --proxy-config proxy.json",
+    "node": "node server-dev.js"
   },
   "private": true,
   "dependencies": {
