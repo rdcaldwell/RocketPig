@@ -1,3 +1,16 @@
 .btn-primary {
     width:100%;
 }
+
+.registerCard {
+    background-color: #f4f3f4;
+    margin: auto;
+    border: 1px solid #c0c5c8;
+    padding: 45px;
+    margin-top: 10px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom:15px;
+}

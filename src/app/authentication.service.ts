@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import { Router } from '@angular/router';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
 
 export interface Customer {
   _id: string;
@@ -27,8 +29,12 @@ export interface TokenPayload {
 
 @Injectable()
 export class AuthenticationService {
+
   private token: string;
-  constructor(private http: HttpClient, private router: Router) {}
+
+  constructor(private httpClient: HttpClient,
+              private http: Http,
+              private router: Router) {}
 
   private saveToken(token: string): void {
     localStorage.setItem('mean-token', token);
@@ -42,7 +48,7 @@ export class AuthenticationService {
     return this.token;
   }
 
-  public getCustomer(): Customer {
+  getCustomer(): Customer {
     const token = this.getToken();
     let payload;
     if (token) {
@@ -54,7 +60,7 @@ export class AuthenticationService {
     }
   }
 
-  public isLoggedIn(): boolean {
+  isLoggedIn(): boolean {
     const customer = this.getCustomer();
     if (customer) {
       return customer.exp > Date.now() / 1000;
@@ -63,14 +69,19 @@ export class AuthenticationService {
     }
   }
 
-  private request(method: 'post'|'get', type: 'login'|'register'|'profile', customer?: TokenPayload): Observable<any> {
-    let base;
-    if (method === 'post') {
-      base = this.http.post(`/api/${type}`, customer);
-    } else {
-      base = this.http.get(`/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
-    }
+  private getRequest() {
+    const base = this.httpClient.get(`/api/profile`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
 
+    return this.request(base);
+  }
+
+  private postRequest(type,  user?: TokenPayload): Observable<any> {
+    const base = this.httpClient.post(`/api/${type}`, user);
+
+    return this.request(base);
+  }
+
+  private request(base) {
     const request = base.pipe(
       map((data: TokenResponse) => {
         if (data.token) {
@@ -83,19 +94,23 @@ export class AuthenticationService {
     return request;
   }
 
-  public register(customer: TokenPayload): Observable<any> {
-    return this.request('post', 'register', customer);
+  register(user: TokenPayload): Observable<any> {
+    return this.postRequest('register', user);
   }
 
-  public login(customer: TokenPayload): Observable<any> {
-    return this.request('post', 'login', customer);
+  login(user: TokenPayload): Observable<any> {
+    return this.postRequest('login', user);
   }
 
-  public profile(): Observable<any> {
-    return this.request('get', 'profile');
+  profile(): Observable<any> {
+    return this.getRequest();
   }
 
-  public logout(): void {
+  validate(username, type) {
+    return this.http.get(`/api/${type}-validation/${username}`).map(res => res.json());
+  }
+
+  logout(): void {
     this.token = '';
     window.localStorage.removeItem('mean-token');
     this.router.navigateByUrl('/');

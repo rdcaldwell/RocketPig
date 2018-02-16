@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
 import { Router } from '@angular/router';
-import * as $ from 'jquery';
 
 @Component({
-  selector: 'register',
+  selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -18,13 +17,33 @@ export class RegisterComponent implements OnInit {
     phoneNumber: null
   };
 
+  usernameFound: boolean;
+  emailFound: boolean;
+  passwordCheck: boolean;
+
   constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
   }
 
+  validateUsername() {
+    if (this.credentials.username) {
+      this.authenticationService.validate(this.credentials.username, 'username').subscribe(data => {
+        this.usernameFound = data.found;
+      });
+    }
+  }
+
+  validateEmail() {
+    if (this.credentials.email) {
+      this.authenticationService.validate(this.credentials.email, 'email').subscribe(data => {
+        this.emailFound = data.found;
+      });
+    }
+  }
+
   register() {
-    $('#registerModal').modal('hide');
+    // TODO: add validation on register
     this.authenticationService.register(this.credentials).subscribe(() => {
       this.router.navigateByUrl(`/profile/${this.credentials.username}`);
     }, (err) => {

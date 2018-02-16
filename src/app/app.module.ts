@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-
 import { AppComponent } from './app.component';
 import { FlightsComponent } from './flights/flights.component';
 import { RegisterComponent } from './register/register.component';
@@ -19,6 +19,8 @@ import { OrderPreviewComponent } from './order-preview/order-preview.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'flights', component: FlightsComponent },
   { path: 'order-preview/:id', component: OrderPreviewComponent },
   { path: 'invoice/:id', component: ConfirmationComponent },
@@ -41,8 +43,9 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
     HttpClientModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes)
   ],
   providers: [
     AuthenticationService,

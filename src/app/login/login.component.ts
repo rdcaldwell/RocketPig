@@ -1,30 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
 import { Router } from '@angular/router';
-import * as $ from 'jquery';
 
 @Component({
-  selector: 'login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent  {
   credentials: TokenPayload = {
     username: '',
     password: ''
   };
+  incorrectPassword = false;
+  userNotFound = false;
 
-  constructor(private authenticationService: AuthenticationService,
-              private router: Router) { }
-
-  ngOnInit() {}
+  constructor(public authenticationService: AuthenticationService,
+              private router: Router) {}
 
   login() {
-    $("#loginModal").modal('hide');
+    this.incorrectPassword = false;
+    this.userNotFound = false;
     this.authenticationService.login(this.credentials).subscribe(() => {
       this.router.navigateByUrl(`/profile/${this.credentials.username}`);
     }, (err) => {
-      console.error(err);
+      if (err.error.message === 'User not found') {
+        this.userNotFound = true;
+      } else if (err.error.message === 'Password is wrong') {
+        this.incorrectPassword = true;
+      }
     });
   }
 }
