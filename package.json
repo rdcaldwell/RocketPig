@@ -14,7 +14,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "angular": "ng serve --proxy-config proxy.json",
-    "node": "node server-dev.js"
+    "node": "nodemon server-dev.js"
   },
   "private": true,
   "dependencies": {
@@ -29,7 +29,6 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
-    "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "@types/bootstrap": "^3.3.37",
     "@types/jquery": "^3.3.0",
     "body-parser": "^1.18.2",
