@@ -3,6 +3,10 @@ table {
     margin-top:20px;
 }
 
+button {
+    width: 100%;
+}
+
 .container {
     background-color: #f4f3f4;
     margin: auto;

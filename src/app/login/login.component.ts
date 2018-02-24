@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
 import { Router } from '@angular/router';
+import { FlightService } from '../flight.service';
 
 @Component({
   selector: 'app-login',
@@ -16,13 +17,15 @@ export class LoginComponent  {
   userNotFound = false;
 
   constructor(public authenticationService: AuthenticationService,
-              private router: Router) {}
+              private router: Router,
+              private flightService: FlightService) {}
 
   login() {
     this.incorrectPassword = false;
     this.userNotFound = false;
     this.authenticationService.login(this.credentials).subscribe(() => {
-      this.router.navigateByUrl(`/profile/${this.credentials.username}`);
+      this.flightService.updateCart();
+      this.router.navigateByUrl(`/${this.credentials.username}`);
     }, (err) => {
       if (err.error.message === 'User not found') {
         this.userNotFound = true;

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../authentication.service';
+import { FlightService } from '../flight.service';
 
 @Component({
   selector: 'app-history',
@@ -6,10 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./history.component.css']
 })
 export class HistoryComponent implements OnInit {
+  customerId = this.authenticationService.getCustomer()._id;
+  bookings: any = [];
 
-  constructor() { }
+  constructor(private authenticationService: AuthenticationService,
+              private flightService: FlightService) { }
 
   ngOnInit() {
+    this.flightService.getCustomerBookings(this.customerId).subscribe(bookings => {
+      this.bookings = bookings;
+    });
   }
 
 }

@@ -9,22 +9,28 @@ import { FlightsComponent } from './flights/flights.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthenticationService } from './authentication.service';
 import { LoginComponent } from './login/login.component';
-import { ActivateService } from './activate.service';
 import { ProfileComponent } from './profile/profile.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 import { HistoryComponent } from './history/history.component';
-import { OrderPreviewComponent } from './order-preview/order-preview.component';
+import { BookingComponent } from './booking/booking.component';
+import { FlightPackageComponent } from './flight-package/flight-package.component';
+import { SearchComponent } from './search/search.component';
+import { FlightService } from './flight.service';
+import { MomentModule } from 'angular2-moment';
+import { FlightComponent } from './flight/flight.component';
+import { TicketComponent } from './ticket/ticket.component';
+import { CartComponent } from './cart/cart.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'flights', component: FlightsComponent },
-  { path: 'order-preview/:id', component: OrderPreviewComponent },
-  { path: 'invoice/:id', component: ConfirmationComponent },
-  { path: 'profile/:username', component: ProfileComponent, canActivate: [ActivateService] },
+  { path: 'booking', component: BookingComponent },
+  { path: ':username', component: ProfileComponent, canActivate: [AuthenticationService] },
+  { path: 'invoice/:id', component: InvoiceComponent },
 ];
 
 @NgModule({
@@ -36,20 +42,26 @@ const routes: Routes = [
     ProfileComponent,
     HeaderComponent,
     HomeComponent,
-    ConfirmationComponent,
+    InvoiceComponent,
     HistoryComponent,
-    OrderPreviewComponent
+    BookingComponent,
+    FlightPackageComponent,
+    SearchComponent,
+    FlightComponent,
+    TicketComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     HttpClientModule,
+    MomentModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
     AuthenticationService,
-    ActivateService
+    FlightService
   ],
   bootstrap: [AppComponent]
 })

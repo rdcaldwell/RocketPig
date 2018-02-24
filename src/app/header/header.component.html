@@ -16,6 +16,9 @@
         </li>
       </ul>
       <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item ml-auto">
+          <a class="nav-link"><app-cart></app-cart></a>
+        </li>
         <li *ngIf="!authenticationService.isLoggedIn()" class="nav-item">
           <a class="nav-link" routerLink="/register">Register <i class="fas fa-user-plus"></i></a>
         </li>
@@ -23,10 +26,11 @@
           <a class="nav-link" routerLink="/login">Login <i class="fas fa-sign-in-alt"></i></a>
         </li>
         <li *ngIf="authenticationService.isLoggedIn()" class="nav-item ml-auto">
-          <a class="nav-link" [routerLink]="['/profile', authenticationService.getCustomer().user ]">Hello, {{ authenticationService.getCustomer().user }}</a>
+          <a class="nav-link" [routerLink]="[ authenticationService.getCustomer().user ]">
+            {{ authenticationService.getCustomer().user }} <i class="fas fa-user-circle"></i></a>
         </li>
         <li *ngIf="authenticationService.isLoggedIn()" class="nav-item ml-auto">
-          <a class="nav-link" (click)="authenticationService.logout()">Logout</a>
+          <a class="nav-link" (click)="authenticationService.logout()">Logout <i class="fas fa-sign-out-alt"></i></a>
         </li>
       </ul>
   </div>

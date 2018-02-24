@@ -43,9 +43,8 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    // TODO: add validation on register
     this.authenticationService.register(this.credentials).subscribe(() => {
-      this.router.navigateByUrl(`/profile/${this.credentials.username}`);
+      this.router.navigateByUrl(`/${this.credentials.username}`);
     }, (err) => {
       console.error(err);
     });

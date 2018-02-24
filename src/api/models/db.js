@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = 'mongodb://admin:password@ds229458.mlab.com:29458/rocketpig';
+var db = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@ds229458.mlab.com:29458/rocketpig`
 
 mongoose.connect(db);
 
@@ -15,4 +15,8 @@ mongoose.connection.on('disconnected', function() {
     console.log('Mongoose disconnected');
 });
 
-require('./customers');
+require('./customer');
+require('./booking');
+require('./flight');
+require('./reward');
+require('./ticket');

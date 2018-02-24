@@ -3,29 +3,21 @@
   <table id="purchaseHistory" class="table">
     <thead>
       <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Flight</th>
-        <th scope="col">Time</th>
-        <th scope="col">Type</th>
-        <th scope="col">Class</th>
-        <th scope="col">Age</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Price</th>
+        <th scope="col">Booking ID</th>
+        <th scope="col">Booking Date</th>
+        <th scope="col">Total</th>
         <th scope="col">Details</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="clickable-row">
-        <td>2/10/2018</td>
-        <td>Dalls (DFW) to Fort Myers (RSW)</td>
-        <td>10:55am - 5:25pm</td>
-        <td>One-Way</td>
-        <td>Economy</td>
-        <td>Adult</td>
-        <td>1</td>
-        <td>$125</td>
-        <td><button role="button" class="btn btn-primary" [routerLink]="['/invoice', '5a7bca13389f6c4f9f5e29cd']">View</button></td>
-      </tr>
+      <ng-container *ngFor="let booking of bookings">
+          <tr>
+              <td>{{ booking._id }}</td>
+              <td>{{ booking.bookingDate | amDateFormat: 'MMMM Do, YYYY h:mm A'}}</td>
+              <td>${{ booking.total }}</td>
+              <td><button role="button" class="btn btn-primary" [routerLink]="['/invoice', booking._id]">View</button></td>
+            </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>

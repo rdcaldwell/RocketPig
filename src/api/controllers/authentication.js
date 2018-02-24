@@ -23,7 +23,6 @@ module.exports.register = function(req, res) {
       "token" : token
     });
   });
-  console.log(customer.username + " registered");
 };
 
 module.exports.login = function(req, res) {

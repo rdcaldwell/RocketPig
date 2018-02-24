@@ -12,12 +12,15 @@
               This username has been taken.
             </div> 
           </div>
-        <div class="form-group">
-          <input type="email" class="form-control" name="email"
-            placeholder="Email Address" #isEmail="ngModel" [(ngModel)]="credentials.email"
-            (keyup)="validateEmail()" [ngClass]="{'is-invalid': emailFound}" email>
+          <div class="form-group">
+            <input type="email" class="form-control" name="email"
+              placeholder="Email Address" #isEmail="ngModel" [(ngModel)]="credentials.email"
+              (keyup)="validateEmail()" [ngClass]="{'is-invalid': emailFound}" email>
             <div *ngIf="emailFound" class="invalid-feedback">
               This email address has been used.
+            </div> 
+            <div *ngIf="isEmail.invalid" class="invalid-feedback">
+              Please enter a valid email address.
             </div> 
           </div>
           <div class="form-group">
@@ -37,6 +40,9 @@
               placeholder="Password" [(ngModel)]="credentials.password"
               [ngClass]="{'is-valid': credentials.password.length >= 6}">
           </div>
+          <div *ngIf=" credentials.password.length < 6" class="invalid-feedback">
+            Please enter a password greater than or equal to 6 characters.
+          </div> 
           <button type="submit" class="btn btn-primary" [disabled]="usernameFound ||
             emailFound || !credentials.username || isEmail.invalid ||
             !credentials.firstName || !credentials.lastName || !credentials.phoneNumber ||
