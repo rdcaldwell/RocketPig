@@ -1,5 +1,5 @@
 # RocketPig
 
-Flight aggregation application
+Flight aggregator application
 
-rocketpig.herokuapp.com
+https://rocketpig.herokuapp.com
