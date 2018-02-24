@@ -1,3 +1,5 @@
 # RocketPig
 
-Rocket Pig. Rocket Pig. Does whatever Rocket Pig a Rocket Pig does.
+Flight aggregation application
+
+rocketpig.herokuapp.com
