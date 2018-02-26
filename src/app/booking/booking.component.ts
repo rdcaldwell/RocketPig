@@ -63,7 +63,7 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async createBooking() {
     const { token, error } = await stripe.createToken(this.card);
-
+    this.bookings.total = this.flightService.total;
     this.flightService.postTickets(this.flightService.tickets).subscribe(ticketIds => {
       this.bookings.tickets = ticketIds;
       this.flightService.postBooking(this.bookings).subscribe(bookingId => {
