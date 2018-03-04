@@ -8,14 +8,6 @@ section {
     margin-top:-25px;
 }
 
-.searchCard {
-    background-color: #f4f3f4;
-    margin: auto;
-    border: 1px solid #c0c5c8;
-    padding: 45px;
-    margin-top: 50px;
-}
-
-.btn-primary {
-    width:100%;
+.homeSearch {
+    margin-top: 25px;
 }

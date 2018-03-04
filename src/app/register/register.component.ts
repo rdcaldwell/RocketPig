@@ -14,7 +14,8 @@ export class RegisterComponent implements OnInit {
     password: '',
     firstName: '',
     lastName: '',
-    phoneNumber: null
+    phoneNumber: null,
+    miles: 0
   };
 
   usernameFound: boolean;

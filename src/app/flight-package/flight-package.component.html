@@ -1,27 +1,37 @@
 <section class="flightCard">
-    <div class="container">
+  <div class="container">
     <div class="row">
-    <div class="col-lg-2 offset-lg-0">
-    <div class="trip-time"> <div class="row">{{ flight.arrivalDate | amDifference: flight.departureDate : 'seconds' | amDuration: 'seconds' }}</div> </div>
-    <div class="trip-stops"> <div class="row">{{ flight.stops }} stops</div> </div>
+      <div class="col-lg-2 offset-lg-0">
+        <div class="trip-time">
+          <div class="row">{{ flight.arrivalDate | amDifference: flight.departureDate : 'seconds' | amDuration: 'seconds' }}</div>
+        </div>
+        <div class="trip-stops">
+          <div class="row">{{ flight.stops }} stops</div>
+        </div>
+      </div>
+      <div class="airline-pic">
+        <div class="col-lg-2">
+          <img src="/assets/img/{{ airlineCode }}.png" height="50" alt="{{ flight.airline }}">
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="row">{{ flight.departureDate | amDateFormat: 'M/D/YYYY h:mm A'}}</div>
+        <div class="row">{{ flight.departure }}</div>
+      </div>
+      <div class="col-lg-3">
+        <div class="row">{{ flight.arrivalDate | amDateFormat: 'M/D/YYYY h:mm A'}}</div>
+        <div class="row">{{ flight.arrival }}</div>
+      </div>
+      <div class="col">
+        <div class="row">${{ flight.price }}</div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <button type="button" class="btn btn-primary" (click)="createBooking()">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="airline-pic"> <div class="col-lg-2"><img src="/assets/img/{{ airlineCode }}.png" height="50" alt="{{ flight.airline }}"></div> </div>
-    <div class="col-lg-3">
-    <div class="row">{{ flight.departureDate | amDateFormat: 'M/D/YYYY h:mm A'}}</div>
-    <div class="row">{{ flight.departure }}</div>
-    </div>
-    <div class="col-lg-3">
-    <div class="row">{{ flight.arrivalDate | amDateFormat: 'M/D/YYYY h:mm A'}}</div>
-    <div class="row">{{ flight.arrival }}</div>
-    </div>
-    <div class="col">
-    <div class="row">${{ flight.price }}</div>
-    <div class="row">
-    <div class="col-lg-12">
-    <div class="row"><button type="button" class="btn btn-primary" (click)="createBooking()">Select</button></div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
+  </div>
 </section>

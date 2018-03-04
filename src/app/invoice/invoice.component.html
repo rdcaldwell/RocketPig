@@ -1,18 +1,57 @@
 <div class="container">
   <section class="orderCard">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         <h1>Booking Invoice</h1>
         <span>Booking ID: {{ bookingId }}</span>
         <br>
         <button class="btn btn-primary" href="#">Print Invoice</button>
       </div>
-      <div class="col-md-4">
-        <h4>Traveler: 
-          <span *ngIf="customerProfile" class="float-right">{{ customerProfile.firstName }} {{ customerProfile.lastName }}</span>
-          <span *ngIf="!customerProfile" class="float-right">Guest</span>
-        </h4>
-        <span>Total:</span><span class="float-right">${{ booking.total }}</span>
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label for="traveler" class="col-sm-4 col-form-label">Traveler:</label>
+          <div class="col-sm-8">
+            <input *ngIf="customerProfile" type="text" readonly class="form-control-plaintext" id="traveler" value="{{ customerProfile.firstName }} {{ customerProfile.lastName }}">
+            <input *ngIf="!customerProfile" type="text" readonly class="form-control-plaintext" id="traveler" value="Guest">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="total" class="col-sm-4 col-form-label">Total:</label>
+          <div class="col-sm-8">
+            <input type="text" readonly class="form-control-plaintext" id="total" value="${{ booking.total }}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="billingName" class="col-sm-4 col-form-label">Billing Name:</label>
+          <div class="col-sm-8">
+            <input type="text" readonly class="form-control-plaintext" id="billingName" value="{{ booking.firstName }} {{ booking.lastName }}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="email" class="col-sm-4 col-form-label">Email Address:</label>
+          <div class="col-sm-8">
+            <input type="text" readonly class="form-control-plaintext" id="email" value="{{ booking.email }}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="address" class="col-sm-4 col-form-label">Address:</label>
+          <div class="col-sm-8">
+            <input type="text" readonly class="form-control-plaintext" id="address" value="{{ booking.address }}">
+            <input type="text" readonly class="form-control-plaintext" id="location" value="{{ booking.city }}, {{ booking.state }} {{ booking.zip }}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="miles" class="col-sm-4 col-form-label">Total Miles:</label>
+          <div class="col-sm-8">
+            <input type="text" readonly class="form-control-plaintext" id="miles" value="{{ booking.totalMiles }}">
+          </div>
+        </div>
+        <div *ngIf="booking.rewardCode !== null" class="form-group row">
+          <label for="rewardCode" class="col-sm-4 col-form-label">Reward Code:</label>
+          <div class="col-sm-8">
+            <input type="text" readonly class="form-control-plaintext" id="rewardCode" value="{{ booking.rewardCode }}">
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FlightService } from '../flight.service';
 import { Router } from '@angular/router';
-import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  selector: 'app-sidebar-search',
+  templateUrl: './sidebar-search.component.html',
+  styleUrls: ['./sidebar-search.component.css']
 })
-export class SearchComponent implements OnInit {
-
+export class SidebarSearchComponent implements OnInit {
   public travelClasses: Array<any> = [
     {
       class: 'Economy'
@@ -35,12 +33,13 @@ export class SearchComponent implements OnInit {
   ];
 
   constructor(public flightService: FlightService,
-  private router: Router) { }
+    private router: Router) { }
 
   ngOnInit() {
   }
 
   search() {
+    this.flightService.setFlights();
     this.router.navigateByUrl('/flights/departure');
   }
 }

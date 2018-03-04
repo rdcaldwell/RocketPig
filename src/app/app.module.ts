@@ -22,12 +22,25 @@ import { MomentModule } from 'angular2-moment';
 import { FlightComponent } from './flight/flight.component';
 import { TicketComponent } from './ticket/ticket.component';
 import { CartComponent } from './cart/cart.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  MatInputModule,
+  MatAutocompleteModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatFormFieldModule,
+  MatRadioModule,
+  MatSelectModule
+} from '@angular/material';
+import { SidebarSearchComponent } from './sidebar-search/sidebar-search.component';
+import { FooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'flights', component: FlightsComponent },
+  { path: 'flights/departure', component: FlightsComponent },
+  { path: 'flights/return', component: FlightsComponent },
   { path: 'booking', component: BookingComponent },
   { path: ':username', component: ProfileComponent, canActivate: [AuthenticationService] },
   { path: 'invoice/:id', component: InvoiceComponent },
@@ -49,14 +62,24 @@ const routes: Routes = [
     SearchComponent,
     FlightComponent,
     TicketComponent,
-    CartComponent
+    CartComponent,
+    SidebarSearchComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     HttpClientModule,
     MomentModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatRadioModule,
+    MatSelectModule,
     RouterModule.forRoot(routes)
   ],
   providers: [

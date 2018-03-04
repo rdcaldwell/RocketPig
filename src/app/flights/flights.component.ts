@@ -7,15 +7,19 @@ import { FlightService } from '../flight.service';
   styleUrls: ['./flights.component.css']
 })
 export class FlightsComponent implements OnInit {
-
   flights: any = [];
+  title: string;
 
-  constructor(private flightService: FlightService) { }
+  constructor(public flightService: FlightService) { }
 
   ngOnInit() {
-    this.flightService.getFlights().subscribe(data => {
-      this.flights = data;
-    });
+    this.flightService.setFlights();
+
+    if (this.flightService.searchParameters.bookingType === 'RoundTrip' && this.flightService.searchParameters.firstBooked) {
+      this.title = 'Return Flights';
+    } else {
+      this.title = 'Departure Flights';
+    }
   }
 
 }

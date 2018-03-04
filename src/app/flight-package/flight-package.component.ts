@@ -21,8 +21,8 @@ export class FlightPackageComponent implements OnInit {
   airlineCode: string;
 
   constructor(private flightService: FlightService,
-              private authenticationService: AuthenticationService,
-              private router: Router) { }
+    private authenticationService: AuthenticationService,
+    private router: Router) { }
 
   ngOnInit() {
     if (this.authenticationService.isLoggedIn()) {
@@ -43,9 +43,9 @@ export class FlightPackageComponent implements OnInit {
 
     this.setAirlineCodes();
 
-    this.bookingType = 'One-Way';
-    this.travelClass = 'Adult';
-    this.fareClass = 'Economy';
+    this.bookingType = this.flightService.searchParameters.bookingType;
+    this.travelClass = this.flightService.searchParameters.travelClass;
+    this.fareClass = this.flightService.searchParameters.fareClass;
 
     for (const flight of this.flights) {
       const data = {
@@ -60,6 +60,7 @@ export class FlightPackageComponent implements OnInit {
       bookingData: {
         customerId: this.customerId,
         total: this.getTotal(),
+        totalMiles: this.getTotalMiles(),
         tickets: []
       },
       ticketData: this.ticketData,
@@ -76,13 +77,17 @@ export class FlightPackageComponent implements OnInit {
         this.cart.ticketData.push(ticket);
       }
       this.cart.bookingData.total += this.getTotal();
+      this.cart.bookingData.totalMiles += this.getTotalMiles();
     }
     localStorage.setItem('cart', JSON.stringify(this.cart));
     this.flightService.updateCart();
     this.flightService.updateFlightsInCart();
-    // localStorage.setItem('ticketData', JSON.stringify(this.ticketData));
-    // localStorage.setItem('bookingData', JSON.stringify(this.bookingData));
-    this.router.navigateByUrl('/booking');
+    if (this.bookingType === 'RoundTrip' && !this.flightService.searchParameters.firstBooked) {
+      this.flightService.searchParameters.firstBooked = true;
+      this.router.navigateByUrl('/flights/return');
+    } else {
+      this.router.navigateByUrl('/booking');
+    }
   }
 
   getTotal() {
@@ -93,7 +98,15 @@ export class FlightPackageComponent implements OnInit {
     return total;
   }
 
-   orderByDate() {
+  getTotalMiles() {
+    let total = 0;
+    for (const flight of this.flights) {
+      total += flight.distance;
+    }
+    return total;
+  }
+
+  orderByDate() {
     this.flights.sort((t1, t2) => {
       t1.departureDate = new Date(t1.departureDate);
       t2.departureDate = new Date(t2.departureDate);

@@ -13,6 +13,10 @@ export interface Customer {
   username: string;
   exp: number;
   iat: number;
+  rewardId: string;
+  miles: number;
+  milesToNextReward: number;
+  hasActiveReward: boolean;
 }
 
 interface TokenResponse {
@@ -26,6 +30,10 @@ export interface TokenPayload {
   firstName?: string;
   lastName?: string;
   phoneNumber?: number;
+  rewardId?: string;
+  miles?: number;
+  milesToNextReward?: number;
+  hasActiveReward?: boolean;
 }
 
 @Injectable()

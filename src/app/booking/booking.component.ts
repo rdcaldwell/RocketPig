@@ -11,11 +11,27 @@ declare var elements: any;
 })
 export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
   packageData: any = {};
-  bookings: any = {};
+  bookings: BookingProperties = {
+    customerId: '',
+    rewardCode: '',
+    total: 0,
+    tickets: [],
+    date: new Date(),
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: 0,
+    totalMiles: 0,
+  };
   card: any;
+  codeMessage: string;
+
   constructor(public flightService: FlightService,
-              private router: Router,
-              private authenticationService: AuthenticationService) { }
+    private router: Router,
+    private authenticationService: AuthenticationService) { }
 
   ngOnDestroy() {
     this.card.destroy();
@@ -38,9 +54,9 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
         iconColor: '#fa755a'
       }
     };
-    this.card = elements.create('card', {style: style});
+    this.card = elements.create('card', { style: style });
     this.card.mount('#card-element');
-    this.card.addEventListener('change', function(event) {
+    this.card.addEventListener('change', function (event) {
       const displayError = document.getElementById('card-errors');
       if (event.error) {
         displayError.textContent = event.error.message;
@@ -57,13 +73,26 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.bookings.customerId = null;
     }
     this.bookings.total = this.flightService.cart.bookingData.total;
-    this.bookings.date = new Date();
+    this.bookings.totalMiles = this.flightService.cart.bookingData.totalMiles;
     this.flightService.updateCart();
+  }
+
+  checkRewardCode() {
+    this.flightService.checkRewardCode({
+      customerId: this.bookings.customerId,
+      rewardCode: this.bookings.rewardCode
+    }).subscribe(status => {
+      this.codeMessage = status;
+      if (status === 'Reward code applied successfully') {
+        this.flightService.total *= .95;
+      }
+    });
   }
 
   async createBooking() {
     const { token, error } = await stripe.createToken(this.card);
     this.bookings.total = this.flightService.total;
+    this.bookings.totalMiles = this.flightService.totalMiles;
     this.flightService.postTickets(this.flightService.tickets).subscribe(ticketIds => {
       this.bookings.tickets = ticketIds;
       this.flightService.postBooking(this.bookings).subscribe(bookingId => {
@@ -89,7 +118,16 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
 
 interface BookingProperties {
   customerId: string;
+  rewardCode: string;
   total: number;
   tickets: Array<string>;
   date: Date;
+  firstName: string;
+  lastName: string;
+  email: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: Number;
+  totalMiles: Number;
 }

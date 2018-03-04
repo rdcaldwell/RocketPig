@@ -15,8 +15,8 @@ export class CartComponent implements OnInit {
     this.flightService.updateFlightsInCart();
   }
 
-  remove(index: number, price: number) {
-    this.flightService.removeFlight(index, price);
+  remove(index: number, price: number, distance: number) {
+    this.flightService.removeFlight(index, price, distance);
   }
 
 }

@@ -12,7 +12,7 @@ export class HistoryComponent implements OnInit {
   bookings: any = [];
 
   constructor(private authenticationService: AuthenticationService,
-              private flightService: FlightService) { }
+    private flightService: FlightService) { }
 
   ngOnInit() {
     this.flightService.getCustomerBookings(this.customerId).subscribe(bookings => {

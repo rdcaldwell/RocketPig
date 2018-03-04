@@ -6,6 +6,7 @@
         <th scope="col">Booking ID</th>
         <th scope="col">Booking Date</th>
         <th scope="col">Total</th>
+        <th scope="col">Miles</th>
         <th scope="col">Details</th>
       </tr>
     </thead>
@@ -15,6 +16,7 @@
               <td>{{ booking._id }}</td>
               <td>{{ booking.bookingDate | amDateFormat: 'MMMM Do, YYYY h:mm A'}}</td>
               <td>${{ booking.total }}</td>
+              <td>{{ booking.totalMiles }}</td>
               <td><button role="button" class="btn btn-primary" [routerLink]="['/invoice', booking._id]">View</button></td>
             </tr>
       </ng-container>

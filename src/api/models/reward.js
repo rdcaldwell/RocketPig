@@ -1,8 +1,7 @@
-var mongoose = require( 'mongoose' );
+const mongoose = require('mongoose');
 
-var RewardSchema = new mongoose.Schema({
-    rewardCode: String,
-    used: Boolean,
+const RewardSchema = new mongoose.Schema({
+  used: Boolean,
 });
 
 mongoose.model('Reward', RewardSchema);

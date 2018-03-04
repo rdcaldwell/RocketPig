@@ -1,52 +1,43 @@
-var passport = require('passport');
-var mongoose = require('mongoose');
-var Customer = mongoose.model('Customer');
+const passport = require('passport');
+const mongoose = require('mongoose');
 
-var sendJSONresponse = function(res, status, content) {
-  res.status(status);
-  res.json(content);
-};
+const Customer = mongoose.model('Customer');
 
-module.exports.register = function(req, res) {
-  var customer = new Customer();
+module.exports.register = (req, res) => {
+  const customer = new Customer();
   customer.username = req.body.username;
   customer.email = req.body.email;
   customer.phoneNumber = req.body.phoneNumber;
   customer.firstName = req.body.firstName;
   customer.lastName = req.body.lastName;
+  customer.miles = 0;
+  customer.milesToNextReward = 10000;
+  customer.hasActiveReward = false;
+  customer.rewardId = null;
   customer.setPassword(req.body.password);
-  customer.save(function(err) {
-    var token;
-    token = customer.generateJwt();
+  console.log(customer);
+  customer.save(() => {
     res.status(200);
     res.json({
-      "token" : token
+      token: customer.generateJwt(),
     });
   });
 };
 
-module.exports.login = function(req, res) {
-
-  passport.authenticate('local', function(err, customer, info){
-    var token;
-
-    // If Passport throws/catches an error
+module.exports.login = (req, res) => {
+  passport.authenticate('local', (err, customer, info) => {
     if (err) {
       res.status(404).json(err);
       return;
     }
 
-    // If a user is found
-    if(customer){
-      token = customer.generateJwt();
+    if (customer) {
       res.status(200);
       res.json({
-        "token" : token
+        token: customer.generateJwt(),
       });
     } else {
-      // If user is not found
       res.status(401).json(info);
     }
   })(req, res);
-
 };

@@ -1,36 +1,40 @@
-<a data-toggle="modal" data-target="#cart"><i class="fas fa-shopping-cart"></i> {{ flightService.numberOfItems }}</a>
+<a data-toggle="modal" data-target="#cart">
+  <i class="fas fa-shopping-cart"></i> {{ flightService.numberOfItems }}</a>
 
 <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Shopping Cart</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <ng-container *ngFor="let flight of flightService.flights; let i = index">
-            <div class="row">
-              <div class="col-md-11">
-                <app-flight [flight]="flight"></app-flight>
-                <span *ngIf="!flightService.flights[0]">Your shopping cart is empty</span>
-              </div>
-              <div class="col-md-1">
-                <button type="button" class="btn btn-outline-danger" (click)="remove(i, flight.price)"><i class="fas fa-trash-alt"></i></button>
-              </div>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Shopping Cart</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngFor="let flight of flightService.flights; let i = index">
+          <div class="row">
+            <div class="col-md-11">
+              <app-flight [flight]="flight"></app-flight>
+              <span *ngIf="!flightService.flights[0]">Your shopping cart is empty</span>
             </div>
-          </ng-container>
-        </div>
-        <div class="modal-footer">
-          <div *ngIf="!flights" class="mr-auto">
-              <span>Number of Tickets: {{ flightService.numberOfItems }}</span>
-              <br>
-              <h4>Total: ${{ flightService.total }}</h4>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-outline-danger" (click)="remove(i, flight.price, flight.distance)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
           </div>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!flightService.flights[0]"
-           routerLink="/booking">Check out</button>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <div *ngIf="!flights" class="mr-auto">
+          <span>Total Tickets: {{ flightService.numberOfItems }}</span>
+          <br>
+          <span>Toal Miles: {{ flightService.totalMiles }}</span>
+          <br>
+          <h4>Total: ${{ flightService.total }}</h4>
         </div>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!flightService.flights[0]" routerLink="/booking">Check out</button>
       </div>
     </div>
   </div>
+</div>

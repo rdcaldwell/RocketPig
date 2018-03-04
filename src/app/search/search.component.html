@@ -1,3 +1,62 @@
-<p>
-  search works!
-</p>
+<div class="searchCard">
+  <h3>Go where ever a Rocket Pig goes.</h3>
+  <form (submit)="search()">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <mat-radio-group name="bookingType" [(ngModel)]="flightService.searchParameters.bookingType">
+          <mat-radio-button [checked] value="OneWay">One-Way</mat-radio-button>
+          <mat-radio-button value="RoundTrip">Round Trip</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <mat-form-field>
+          <input matInput name="departure" placeholder="From where?" value="" [(ngModel)]="flightService.searchParameters.departure">
+        </mat-form-field>
+      </div>
+      <div class="form-group col-md-6">
+        <mat-form-field>
+          <input matInput name="destination" placeholder="To where?" value="" [(ngModel)]="flightService.searchParameters.destination">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <mat-form-field>
+          <input matInput name="depart" [matDatepicker]="depart" placeholder="Depart Date" [(ngModel)]="flightService.searchParameters.departDate">
+          <mat-datepicker-toggle matSuffix [for]="depart"></mat-datepicker-toggle>
+          <mat-datepicker #depart></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div *ngIf="flightService.searchParameters.bookingType !== 'OneWay'" class="form-group col-md-6">
+        <mat-form-field>
+          <input matInput name="return" [matDatepicker]="return" placeholder="Return Date" [(ngModel)]="flightService.searchParameters.returnDate">
+          <mat-datepicker-toggle matSuffix [for]="return"></mat-datepicker-toggle>
+          <mat-datepicker #return></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <mat-form-field>
+          <mat-select placeholder="Travel class" name="travelClass" [(ngModel)]="flightService.searchParameters.travelClass">
+            <mat-option *ngFor="let travelClass of travelClasses" [value]="travelClass.class">
+              {{ travelClass.class }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form-group col-md-6">
+        <mat-form-field>
+          <mat-select placeholder="Fare class" name="fareClass" [(ngModel)]="flightService.searchParameters.fareClass">
+            <mat-option *ngFor="let fareClass of fareClasses" [value]="fareClass.class">
+              {{ fareClass.class }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Search <i class="fas fa-search"></i></button>
+  </form>
+</div>

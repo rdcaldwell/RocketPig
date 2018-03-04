@@ -1,7 +1,6 @@
-var mongoose = require( 'mongoose' );
-const ASYNC = require('async');
+const mongoose = require('mongoose');
 
-var FlightSchema = new mongoose.Schema({
+const FlightSchema = new mongoose.Schema({
   departure: String,
   arrival: String,
   departureDate: Date,
@@ -10,7 +9,7 @@ var FlightSchema = new mongoose.Schema({
   distance: Number,
   seatsLeft: Number,
   price: Number,
-  airline: String
+  airline: String,
 });
 
 mongoose.model('Flight', FlightSchema);
