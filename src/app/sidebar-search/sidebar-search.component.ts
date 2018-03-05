@@ -38,11 +38,14 @@ export class SidebarSearchComponent implements OnInit {
   constructor(public flightService: FlightService,
     private router: Router) { }
 
+  // On page load
   ngOnInit() {
+    // Set default search parameters if not blank
     if (this.flightService.searchParameters.departure !== '') {
       this.departures.push(this.flightService.searchParameters.departure);
       this.destinations.push(this.flightService.searchParameters.destination);
     }
+    // Get all flights and departure
     this.flightService.getAllFlights().subscribe(flights => {
       for (const flight of flights) {
         this.allFlights.push(flight);
@@ -53,6 +56,7 @@ export class SidebarSearchComponent implements OnInit {
     });
   }
 
+  // Update destinations dropdown
   updateDestinations() {
     this.destinations = [];
     for (const flight of this.allFlights) {
