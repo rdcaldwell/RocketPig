@@ -11,7 +11,9 @@ export class ProfileComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService) { }
 
+  // On page load
   ngOnInit() {
+    // Gets profile from auth service
     this.authenticationService.profile().subscribe(customer => {
       this.customerProfile = customer;
     }, (err) => {

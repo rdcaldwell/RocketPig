@@ -8,13 +8,16 @@ import { FlightService } from '../flight.service';
   styleUrls: ['./history.component.css']
 })
 export class HistoryComponent implements OnInit {
+  // Set customer id from auth service
   customerId = this.authenticationService.getCustomer()._id;
   bookings: any = [];
 
   constructor(private authenticationService: AuthenticationService,
     private flightService: FlightService) { }
 
+  // On page load
   ngOnInit() {
+    // Get customer bookings from customer id
     this.flightService.getCustomerBookings(this.customerId).subscribe(bookings => {
       this.bookings = bookings;
     });

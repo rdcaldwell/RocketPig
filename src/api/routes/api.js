@@ -25,11 +25,14 @@ ROUTER.get('/profile', AUTH, CTRL_PROFILE.profileRead);
 ROUTER.post('/register', CTRL_AUTH.register);
 ROUTER.post('/login', CTRL_AUTH.login);
 
+/* Stripe checkout */
 ROUTER.post('/checkout', (req, res) => {
+  // Creates stripe charge
   stripe.charges.create({
     amount: req.body.amount * 100,
     currency: 'usd',
-    source: req.body.token.id, // obtained with Stripe.js
+    // From Stripe.js client side
+    source: req.body.token.id,
     description: req.body.description,
   }, (err, charge) => {
     if (err) res.json(err);
@@ -37,13 +40,15 @@ ROUTER.post('/checkout', (req, res) => {
   });
 });
 
+/* Checks if username is taken */
 ROUTER.get('/username-validation/:id', (req, res) => {
+  // Retrun data if username is found
   const jsonData = {
     found: false,
   };
-
+  // Customer database query on passed id
   CUSTOMER.findOne({
-    username: req.params.id,
+    username: req.params.username,
   }, (err, customer) => {
     if (!customer) jsonData.found = false;
     else jsonData.found = true;
@@ -51,11 +56,13 @@ ROUTER.get('/username-validation/:id', (req, res) => {
   });
 });
 
+/* Checks if email is taken */
 ROUTER.get('/email-validation/:id', (req, res) => {
+  // Retrun data if email is found
   const jsonData = {
     found: false,
   };
-
+  // Customer database query on passed email
   CUSTOMER.findOne({
     email: req.params.id,
   }, (err, customer) => {
@@ -65,14 +72,19 @@ ROUTER.get('/email-validation/:id', (req, res) => {
   });
 });
 
+/* Checks if reward code is valid */
 ROUTER.post('/reward-validation/', (req, res) => {
+  // Customer database query on passed customerId
   CUSTOMER.findOne({
     _id: req.body.customerId,
   }, (customerErr, customer) => {
+    // Reward database query on passed rewardCode
     REWARD.findOne({
       _id: req.body.rewardCode,
     }, (rewardErr, reward) => {
+      // Saves if the code has been used
       const isCodeUsed = reward.used;
+      // If the code is not used and the customer's reward id matches the passed rewardCode
       if (!isCodeUsed && customer.rewardId.toString() === req.body.rewardCode) {
         res.json('Reward code applied successfully');
       } else {
@@ -98,9 +110,12 @@ ROUTER.get('/flight/new', (req, res) => {
   });
 });
 
+/* Creates new booking */
 ROUTER.post('/booking/new', (req, res) => {
+  // Creates new booking document passed on data passed from client side
   const booking = new BOOKING();
   booking.customerId = req.body.customerId;
+  // Reward code is null if it is blank
   booking.rewardCode = (req.body.rewardCode === '') ? null : req.body.rewardCode;
   booking.tickets = req.body.tickets;
   booking.bookingDate = req.body.date;
@@ -113,152 +128,210 @@ ROUTER.post('/booking/new', (req, res) => {
   booking.city = req.body.city;
   booking.state = req.body.state;
   booking.zip = req.body.zip;
+  // Customer database query on passed customerId
   CUSTOMER.findOne({
     _id: booking.customerId,
   }, (customerErr, customer) => {
+    // Increments customer's miles
     customer.miles += booking.totalMiles;
+    // If the customer does not have an active reward
     if (!customer.hasActiveReward) {
+      // Decrement miles to next reward
       customer.milesToNextReward -= booking.totalMiles;
+      // If the customer has passed the reward miles threshold
       if (customer.milesToNextReward <= 0) {
+        // Create new reward
         const reward = new REWARD();
         reward.used = false;
+        // Bind reward to customer
         customer.rewardId = reward._id;
         customer.hasActiveReward = true;
+        // Reset mileage threshold
         customer.milesToNextReward = 10000;
+        // Save documents to db
         reward.save();
         customer.save();
       }
+      // If customer reward code matches passed reward code
     } else if (customer.rewardId.toString() === req.body.rewardCode) {
+      // Reward database query on passed rewardCode
       REWARD.findOne({
         _id: req.body.rewardCode,
       }, (rewardErr, usedReward) => {
+        // If code is not used
         if (!usedReward.used) {
+          // Set code to used
           usedReward.used = true;
+          // Remove active reward from customer
           customer.hasActiveReward = false;
+          // Remove reward code
           customer.rewardId = null;
         }
+        // Save documents to db
         usedReward.save();
         customer.save();
       });
     }
+    // Save documents to db
     customer.save();
   });
+  // Save documents to db
   booking.save(() => {
     res.json(booking._id);
   });
 });
 
+// Create new ticket
 ROUTER.post('/tickets/new', (req, res) => {
   const ticketIds = [];
+  // Asynchronous for loop for tickets passed in post request
   ASYNC.forEachOf(req.body, (ticket, index, callback) => {
+    // Creates new ticket
     const newTicket = new TICKET();
     newTicket.flight = ticket.flightId;
     newTicket.travelClass = ticket.travelClass;
     newTicket.fareClass = ticket.fareClass;
+    // Save documents to db
     newTicket.save(() => {
+      // Save ticket ids for booking object
       ticketIds.push(newTicket._id);
       callback();
     });
   }, (err) => {
     if (err) res.json(err);
+    // Pass ticket ids back to client
     else res.json(ticketIds);
   });
 });
 
+/* Get booking by id */
 ROUTER.get('/booking/:id', (req, res) => {
+  // Booking database query on passed id
   BOOKING.find({
     _id: req.params.id,
   }, (err, booking) => {
+    // Respond booking object back to client
     res.json(booking[0]);
   });
 });
 
+/* Get customer bookings by customerId */
 ROUTER.get('/bookings/customer/:id', (req, res) => {
+  // Booking database query on passed customerId
   BOOKING.find({
     customerId: req.params.id,
   }, (err, bookings) => {
+    // Respond booking objects back to client
     res.json(bookings);
   });
 });
 
-ROUTER.get('/booking/:id', (req, res) => {
-  BOOKING.find({
-    _id: req.params.id,
-  }, (err, booking) => {
-    res.json(booking[0]);
-  });
-});
-
+/* Get tickets by id */
 ROUTER.get('/ticket/:id', (req, res) => {
+  // Ticket database query on passed id
   TICKET.find({
     _id: req.params.id,
   }, (err, ticket) => {
+    // Respond ticket object back to client
     res.json(ticket[0]);
   });
 });
 
+/* Get flight by id */
 ROUTER.get('/flight/:id', (req, res) => {
+  // Flight database query on passed id
   FLIGHT.find({
     _id: req.params.id,
   }, (err, flight) => {
     if (err) res.json(err);
+    // Respond flight object back to client
     else res.json(flight[0]);
   });
 });
 
+/* Gets flight paths based on user search paramters */
 ROUTER.post('/flights', (req, res) => {
   const searchParameters = req.body;
+  /* Logic for booking round trip return flights.
+   If the booking type is round trip and the departure flight has been booked */
   if (searchParameters.bookingType === 'RoundTrip' && searchParameters.firstBooked) {
+    // Sets departure date as original return date
     searchParameters.departDate = searchParameters.returnDate;
+    // Holds departure airport
     const temp = searchParameters.departure;
+    // Sets departure airport as original destination
     searchParameters.departure = searchParameters.destination;
+    // Sets destination airport as original departure
     searchParameters.destination = temp;
   }
+  // For date query, searches full day (given day + 1)
   const lowerDateBounds = new Date(searchParameters.departDate);
   const upperDateBounds = new Date(searchParameters.departDate);
   upperDateBounds.setDate(upperDateBounds.getDate() + 1);
+  // Route graph saves all flights with their paths
   const ROUTE = new GRAPH();
   const flightPackages = [];
+  // Flight database query using given dates
   FLIGHT.find({
     departureDate: {
       $gte: lowerDateBounds,
       $lt: upperDateBounds,
     },
   }, (flightFindErr, flights) => {
+    // Asynchronous for loop for all flights found on given day
     ASYNC.forEachOf(flights, (flight, index, callback) => {
       const arrivals = {};
+      // Flight database query for all departure flights
       FLIGHT.find({
         departure: flight.departure,
       }, (departureFindErr, departureflights) => {
+        // Asynchronous for loop for all flights departures
         ASYNC.forEachOf(departureflights, (departureflight, index2, callback2) => {
+          /* Builds arrival JavaScript object with the distance
+           to the arrival location from departure */
           arrivals[departureflight.arrival] = departureflight.distance;
           callback2();
         }, (departureLoopErr) => {
           if (departureLoopErr) return;
+          /* Adds node to route graph with all destinations with there distances
+           coming from a particular departure */
           ROUTE.addNode(flight.departure, arrivals);
         });
         callback();
       });
     }, (flightLoopErr) => {
       if (flightLoopErr) return;
+      // All the paths from the searched departure to the searched destination from route graph
       const allPaths = ROUTE.path(searchParameters.departure, searchParameters.destination);
+      // Asynchronous for loop of all paths graph
       ASYNC.forEachOf(allPaths, (flightPackage, i, callback) => {
         const edges = [];
+        /* Asynchronous for loop for each flight package in the path.
+         * A flight package is the path from the searched departure to destination. This could be
+         * RSW -> DFW or RSW -> CLT -> DFW. RSW -> DFW contains one flight while RSW -> CLT
+         * and CLT -> DFW is two flights in the package */
         ASYNC.forEachOf(flightPackage, (flight, j, callback2) => {
+          // Flight database query to get flight information of flights in flight package
           FLIGHT.find({
+            // Current flight in package using j index
             departure: flightPackage[j],
+            // Next flight in package
             arrival: flightPackage[j + 1],
           }, (packageFindErr, edge) => {
+            /* Edge in graph is a flight, the connection between two points in the graph.
+              If the edge is defined, add it to array */
             if (edge[0] !== undefined) edges.push(edge[0]);
             callback2();
           });
         }, (packageLoopErr) => {
           if (packageLoopErr) return;
+          // Edges are the flights in a package, add them to packages array
           flightPackages.push(edges);
           callback();
         });
       }, (pathLoopErr) => {
         if (pathLoopErr) return;
+        // Return all packages to client
         res.json(flightPackages);
       });
     });

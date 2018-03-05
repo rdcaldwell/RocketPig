@@ -12,9 +12,11 @@ export class FlightsComponent implements OnInit {
 
   constructor(public flightService: FlightService) { }
 
+  // When page is loaded
   ngOnInit() {
+    // Sets flights in service
     this.flightService.setFlights();
-
+    // If booking type is round trip and the departure has been booked
     if (this.flightService.searchParameters.bookingType === 'RoundTrip' && this.flightService.searchParameters.firstBooked) {
       this.title = 'Return Flights';
     } else {

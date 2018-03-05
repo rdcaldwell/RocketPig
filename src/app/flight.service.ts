@@ -26,40 +26,49 @@ export class FlightService {
 
   constructor(private http: Http) { }
 
+  // Get flight paths from API
   getFlights() {
     return this.http.post(`/api/flights`, this.searchParameters).map(res => res.json());
   }
 
+  // Sets flights for display in application
   setFlights() {
     this.getFlights().subscribe(data => {
       this.availableFlights = data;
     });
   }
 
+  // Get customer bookings from API with customerId
   getCustomerBookings(id) {
     return this.http.get(`/api/bookings/customer/${id}`).map(res => res.json());
   }
 
+  // Get flight from API with id
   getFlight(id) {
     return this.http.get(`/api/flight/${id}`).map(res => res.json());
   }
 
+  // Get booking from API with id
   getBooking(id) {
     return this.http.get(`/api/booking/${id}`).map(res => res.json());
   }
 
+  // Get ticket from API with id
   getTicket(id) {
     return this.http.get(`/api/ticket/${id}`).map(res => res.json());
   }
 
+  // Create booking from data
   postBooking(data) {
     return this.http.post(`/api/booking/new`, data).map(res => res.json());
   }
 
+  // Create tickets from data
   postTickets(data) {
     return this.http.post(`/api/tickets/new`, data).map(res => res.json());
   }
 
+  // Update cart stored in session
   updateCart() {
     this.cart = JSON.parse(localStorage.getItem('cart'));
     if (this.cart == null) {
@@ -74,14 +83,17 @@ export class FlightService {
     }
   }
 
+  // Checkout using Stripe API with purchase data
   checkout(data) {
     return this.http.post(`/api/checkout`, data).map(res => res.json());
   }
 
+  // Checks if reward code is valid from API
   checkRewardCode(data) {
     return this.http.post(`/api/reward-validation`, data).map(res => res.json());
   }
 
+  // Update the flights in the cart with current data
   updateFlightsInCart() {
     this.flights = [];
     this.tickets = [];
@@ -95,6 +107,7 @@ export class FlightService {
     }
   }
 
+  // Remove single flight from cart
   removeFlight(index: number, price: number, distance: number) {
     this.cart.ticketData.splice(index, 1);
     this.cart.bookingData.total -= price;
@@ -104,6 +117,7 @@ export class FlightService {
     this.updateFlightsInCart();
   }
 
+  // Remove all flights from cart
   removeAllFlights(price: number) {
     this.cart.ticketData = [];
     this.cart.bookingData.total = 0;

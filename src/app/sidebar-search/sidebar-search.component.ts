@@ -38,7 +38,9 @@ export class SidebarSearchComponent implements OnInit {
   ngOnInit() {
   }
 
+  // Navigates to departure flights where flights are filtered using search parameters
   search() {
+    // Sets flights in service
     this.flightService.setFlights();
     this.router.navigateByUrl('/flights/departure');
   }

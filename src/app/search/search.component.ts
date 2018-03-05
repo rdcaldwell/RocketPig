@@ -40,6 +40,7 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
   }
 
+  // Navigates to departure flights where flights are filtered using search parameters
   search() {
     this.router.navigateByUrl('/flights/departure');
   }

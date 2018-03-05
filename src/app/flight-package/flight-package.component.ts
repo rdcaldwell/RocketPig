@@ -24,13 +24,17 @@ export class FlightPackageComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private router: Router) { }
 
+  // When page is loaded
   ngOnInit() {
+    // Sets customer id if user is logged in
     if (this.authenticationService.isLoggedIn()) {
       this.customerId = this.authenticationService.getCustomer()._id;
     }
 
+    // Orders flights by date
     this.orderByDate();
 
+    // Flight data
     this.flight = {
       departure: this.flights[0].departure,
       arrival: this.flights[this.flights.length - 1].arrival,
@@ -43,10 +47,12 @@ export class FlightPackageComponent implements OnInit {
 
     this.setAirlineCodes();
 
+    // Sets options from search parameters
     this.bookingType = this.flightService.searchParameters.bookingType;
     this.travelClass = this.flightService.searchParameters.travelClass;
     this.fareClass = this.flightService.searchParameters.fareClass;
 
+    // Saves ticket data from all flights
     for (const flight of this.flights) {
       const data = {
         flightId: flight._id,
@@ -56,6 +62,7 @@ export class FlightPackageComponent implements OnInit {
       this.ticketData.push(data);
     }
 
+    // Data object for cart
     this.data = {
       bookingData: {
         customerId: this.customerId,
@@ -67,29 +74,42 @@ export class FlightPackageComponent implements OnInit {
     };
   }
 
-  createBooking() {
+  // Adds items to cart
+  addToCart() {
+    // Gets cart data from session
     this.cart = JSON.parse(localStorage.getItem('cart'));
 
     if (this.cart == null) {
+      // Creates new cart object from data if null
       this.cart = this.data;
     } else {
+      // Adds all ticket data to cart
       for (const ticket of this.ticketData) {
         this.cart.ticketData.push(ticket);
       }
+      // Update cart toal
       this.cart.bookingData.total += this.getTotal();
+      // Update cart miles
       this.cart.bookingData.totalMiles += this.getTotalMiles();
     }
+    // Save cart to session
     localStorage.setItem('cart', JSON.stringify(this.cart));
+    // Update cart contents
     this.flightService.updateCart();
     this.flightService.updateFlightsInCart();
+    // If the booking is round trip and the departure has not been booked
     if (this.bookingType === 'RoundTrip' && !this.flightService.searchParameters.firstBooked) {
+      // Save departure as booked
       this.flightService.searchParameters.firstBooked = true;
+      // Navigate to book return page
       this.router.navigateByUrl('/flights/return');
     } else {
+      // Navigate to booking checkout page
       this.router.navigateByUrl('/booking');
     }
   }
 
+  // Gets total price of flight package
   getTotal() {
     let total = 0;
     for (const flight of this.flights) {
@@ -98,6 +118,7 @@ export class FlightPackageComponent implements OnInit {
     return total;
   }
 
+  // Gets total miles of flight package
   getTotalMiles() {
     let total = 0;
     for (const flight of this.flights) {
@@ -106,6 +127,7 @@ export class FlightPackageComponent implements OnInit {
     return total;
   }
 
+  // Orders flights in package by date
   orderByDate() {
     this.flights.sort((t1, t2) => {
       t1.departureDate = new Date(t1.departureDate);
@@ -120,6 +142,7 @@ export class FlightPackageComponent implements OnInit {
     });
   }
 
+  // Sets airline codes for pictures
   setAirlineCodes() {
     if (this.flight.airline === 'American Airlines') {
       this.airlineCode = 'aa';

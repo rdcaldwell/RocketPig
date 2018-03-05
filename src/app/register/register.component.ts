@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
 import { Router } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   credentials: TokenPayload = {
     email: '',
     username: '',
@@ -24,27 +24,33 @@ export class RegisterComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
-  ngOnInit() {
-  }
-
+  // Validate username
   validateUsername() {
+    // If entered username is not blank
     if (this.credentials.username) {
+      // Validate if username is taken in api
       this.authenticationService.validate(this.credentials.username, 'username').subscribe(data => {
         this.usernameFound = data.found;
       });
     }
   }
 
+  // Validate email
   validateEmail() {
+    // If entered email is not blank
     if (this.credentials.email) {
+      // Validate if email is taken in api
       this.authenticationService.validate(this.credentials.email, 'email').subscribe(data => {
         this.emailFound = data.found;
       });
     }
   }
 
+  // Register user
   register() {
+    // Register user using enter parameters
     this.authenticationService.register(this.credentials).subscribe(() => {
+      // Navigate to profile
       this.router.navigateByUrl(`/${this.credentials.username}`);
     }, (err) => {
       console.error(err);

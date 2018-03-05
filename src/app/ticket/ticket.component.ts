@@ -11,7 +11,9 @@ export class TicketComponent implements OnInit {
   flight: any = {};
   constructor(private flightService: FlightService) { }
 
+  // On page load
   ngOnInit() {
+    // Get flight data from ticket from api
     this.flightService.getFlight(this.ticket.flight).subscribe(flight => {
       this.flight = flight;
     });

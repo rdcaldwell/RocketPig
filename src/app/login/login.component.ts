@@ -20,13 +20,18 @@ export class LoginComponent  {
               private router: Router,
               private flightService: FlightService) {}
 
+  // Login user
   login() {
     this.incorrectPassword = false;
     this.userNotFound = false;
+    // Call api to login user
     this.authenticationService.login(this.credentials).subscribe(() => {
+      // Update cart items
       this.flightService.updateCart();
+      // Navigate to profile
       this.router.navigateByUrl(`/${this.credentials.username}`);
     }, (err) => {
+      // Login validations
       if (err.error.message === 'User not found') {
         this.userNotFound = true;
       } else if (err.error.message === 'Password is wrong') {

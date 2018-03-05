@@ -46,6 +46,7 @@ export class AuthenticationService implements CanActivate {
               private router: Router,
               private flightService: FlightService) {}
 
+  // Activates route if customer is authenticated
   canActivate() {
     if (!this.isLoggedIn()) {
       this.router.navigateByUrl('/');
@@ -54,11 +55,13 @@ export class AuthenticationService implements CanActivate {
     return true;
   }
 
+  // Saves user token in session
   private saveToken(token: string): void {
     localStorage.setItem('token', token);
     this.token = token;
   }
 
+  // Gets user token from session
   private getToken(): string {
     if (!this.token) {
       this.token = localStorage.getItem('token');
@@ -66,6 +69,7 @@ export class AuthenticationService implements CanActivate {
     return this.token;
   }
 
+  // Return customer object from token
   getCustomer(): Customer {
     const token = this.getToken();
     let payload;
@@ -78,6 +82,7 @@ export class AuthenticationService implements CanActivate {
     }
   }
 
+  // Returns if the user is currently logged in
   isLoggedIn(): boolean {
     const customer = this.getCustomer();
     if (customer) {
@@ -87,18 +92,21 @@ export class AuthenticationService implements CanActivate {
     }
   }
 
+  // Sends get request with authorization header to profile controller in API
   private getRequest() {
     const base = this.httpClient.get(`/api/profile`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
 
     return this.request(base);
   }
 
+  // Sends post requests to login and register controllers in API
   private postRequest(type,  user?: TokenPayload): Observable<any> {
     const base = this.httpClient.post(`/api/${type}`, user);
 
     return this.request(base);
   }
 
+  // Creates request with token
   private request(base) {
     const request = base.pipe(
       map((data: TokenResponse) => {
@@ -112,22 +120,27 @@ export class AuthenticationService implements CanActivate {
     return request;
   }
 
+  // Register controller request with token
   register(user: TokenPayload): Observable<any> {
     return this.postRequest('register', user);
   }
 
+  // Login controller request with token
   login(user: TokenPayload): Observable<any> {
     return this.postRequest('login', user);
   }
 
+  // Profile controller request
   profile(): Observable<any> {
     return this.getRequest();
   }
 
+  // Validate form fields
   validate(username, type) {
     return this.http.get(`/api/${type}-validation/${username}`).map(res => res.json());
   }
 
+  // Logout user and end session
   logout(): void {
     this.token = '';
     localStorage.removeItem('token');

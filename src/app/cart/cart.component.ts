@@ -10,11 +10,14 @@ export class CartComponent implements OnInit {
 
   constructor(public flightService: FlightService) { }
 
+  // When page is loaded
   ngOnInit() {
+    // Update items in cart
     this.flightService.updateCart();
     this.flightService.updateFlightsInCart();
   }
 
+  // Remove item from cart
   remove(index: number, price: number, distance: number) {
     this.flightService.removeFlight(index, price, distance);
   }
