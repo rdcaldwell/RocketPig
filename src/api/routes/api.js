@@ -249,7 +249,15 @@ ROUTER.get('/flight/:id', (req, res) => {
   });
 });
 
-/* Gets flight paths based on user search paramters */
+/* Get all flights */
+ROUTER.get('/flights/all', (req, res) => {
+  FLIGHT.find({}, (err, flights) => {
+    if (err) res.json(err);
+    else res.json(flights);
+  });
+});
+
+/* Gets flight paths based on user search parameters */
 ROUTER.post('/flights', (req, res) => {
   const searchParameters = req.body;
   /* Logic for booking round trip return flights.

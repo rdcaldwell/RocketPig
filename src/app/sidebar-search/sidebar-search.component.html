@@ -8,12 +8,20 @@
     </div>
     <div class="form-group">
       <mat-form-field>
-        <input matInput name="departure" placeholder="From where?" value="" [(ngModel)]="flightService.searchParameters.departure">
+        <mat-select (change)="updateDestinations()" placeholder="From where?" name="departures" [(ngModel)]="flightService.searchParameters.departure">
+          <mat-option *ngFor="let departure of departures" [value]="departure">
+            {{ departure }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
     <div class="form-group">
       <mat-form-field>
-        <input matInput name="destination" placeholder="To where?" value="" [(ngModel)]="flightService.searchParameters.destination">
+        <mat-select placeholder="To where?" name="destinations" [(ngModel)]="flightService.searchParameters.destination">
+          <mat-option *ngFor="let destination of destinations" [value]="destination">
+            {{ destination }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
     <div class="form-group">

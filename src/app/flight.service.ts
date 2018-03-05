@@ -31,6 +31,11 @@ export class FlightService {
     return this.http.post(`/api/flights`, this.searchParameters).map(res => res.json());
   }
 
+  // Get all flights from API
+  getAllFlights() {
+    return this.http.get(`/api/flights/all`).map(res => res.json());
+  }
+
   // Sets flights for display in application
   setFlights() {
     this.getFlights().subscribe(data => {

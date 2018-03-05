@@ -42,6 +42,7 @@ export class FlightPackageComponent implements OnInit {
       arrivalDate: this.flights[this.flights.length - 1].arrivalDate,
       stops: this.flights.length - 1,
       price: this.getTotal(),
+      miles: this.getTotalMiles(),
       airline: this.flights[0].airline
     };
 

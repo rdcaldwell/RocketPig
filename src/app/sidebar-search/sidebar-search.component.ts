@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar-search.component.css']
 })
 export class SidebarSearchComponent implements OnInit {
+  departures: any = [];
+  destinations: any = [];
+  allFlights: any = [];
   public travelClasses: Array<any> = [
     {
       class: 'Economy'
@@ -36,6 +39,27 @@ export class SidebarSearchComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    if (this.flightService.searchParameters.departure !== '') {
+      this.departures.push(this.flightService.searchParameters.departure);
+      this.destinations.push(this.flightService.searchParameters.destination);
+    }
+    this.flightService.getAllFlights().subscribe(flights => {
+      for (const flight of flights) {
+        this.allFlights.push(flight);
+        if (!this.departures.includes(flight.departure)) {
+          this.departures.push(flight.departure);
+        }
+      }
+    });
+  }
+
+  updateDestinations() {
+    this.destinations = [];
+    for (const flight of this.allFlights) {
+      if (flight.departure === this.flightService.searchParameters.departure && !this.destinations.includes(flight.arrival)) {
+        this.destinations.push(flight.arrival)
+      }
+    }
   }
 
   // Navigates to departure flights where flights are filtered using search parameters

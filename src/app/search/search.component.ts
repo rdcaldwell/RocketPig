@@ -9,7 +9,9 @@ import * as $ from 'jquery';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-
+  departures: any = [];
+  destinations: any = [];
+  allFlights: any = [];
   public travelClasses: Array<any> = [
     {
       class: 'Economy'
@@ -35,9 +37,27 @@ export class SearchComponent implements OnInit {
   ];
 
   constructor(public flightService: FlightService,
-  private router: Router) { }
+    private router: Router) { }
 
   ngOnInit() {
+    this.flightService.getAllFlights().subscribe(flights => {
+      for (const flight of flights) {
+        this.allFlights.push(flight);
+        if (!this.departures.includes(flight.departure)) {
+          this.departures.push(flight.departure);
+        }
+      }
+    });
+    console.log(this.allFlights);
+  }
+
+  updateDestinations() {
+    this.destinations = [];
+    for (const flight of this.allFlights) {
+      if (flight.departure === this.flightService.searchParameters.departure && !this.destinations.includes(flight.arrival)) {
+        this.destinations.push(flight.arrival)
+      }
+    }
   }
 
   // Navigates to departure flights where flights are filtered using search parameters

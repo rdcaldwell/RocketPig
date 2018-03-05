@@ -6,6 +6,9 @@
           <div class="row">{{ flight.arrivalDate | amDifference: flight.departureDate : 'seconds' | amDuration: 'seconds' }}</div>
         </div>
         <div class="trip-stops">
+          <div class="row">{{ flight.miles }} total miles</div>
+        </div>
+        <div class="trip-stops">
           <div class="row">{{ flight.stops }} stops</div>
         </div>
       </div>
