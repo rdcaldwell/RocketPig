@@ -6,7 +6,9 @@
     </div>
     <div class="col-md-9">
       <ng-container *ngFor="let flightPackage of flightService.availableFlights">
-        <app-flight-package [flights]="flightPackage"></app-flight-package>
+        <ng-container *ngIf="flightPackage.length > flightService.searchParameters.stops">
+          <app-flight-package [flights]="flightPackage"></app-flight-package>
+        </ng-container>
       </ng-container>
     </div>
   </div>

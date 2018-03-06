@@ -49,8 +49,8 @@
       <div class="form-group col-md-6">
         <mat-form-field>
           <mat-select placeholder="Travel class" name="travelClass" [(ngModel)]="flightService.searchParameters.travelClass">
-            <mat-option *ngFor="let travelClass of travelClasses" [value]="travelClass.class">
-              {{ travelClass.class }}
+            <mat-option *ngFor="let travelClass of travelClasses" [value]="travelClass">
+              {{ travelClass }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -58,13 +58,26 @@
       <div class="form-group col-md-6">
         <mat-form-field>
           <mat-select placeholder="Fare class" name="fareClass" [(ngModel)]="flightService.searchParameters.fareClass">
-            <mat-option *ngFor="let fareClass of fareClasses" [value]="fareClass.class">
-              {{ fareClass.class }}
+            <mat-option *ngFor="let fareClass of fareClasses" [value]="fareClass">
+              {{ fareClass }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Search <i class="fas fa-search"></i></button>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <mat-form-field>
+          <mat-select placeholder="Number of Stops" name="stops" [(ngModel)]="flightService.searchParameters.stops">
+            <mat-option *ngFor="let stop of stops" [value]="stop">
+              {{ stop }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Search
+      <i class="fas fa-search"></i>
+    </button>
   </form>
 </div>

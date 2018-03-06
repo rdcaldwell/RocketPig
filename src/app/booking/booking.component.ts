@@ -27,6 +27,7 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
     totalMiles: 0,
   };
   card: any;
+  cardName: string;
   codeMessage: string;
 
   constructor(public flightService: FlightService,
@@ -41,33 +42,9 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // After page is loaded
   ngAfterViewInit() {
-    // Creates stripe card element
-    const style = {
-      base: {
-        color: '#32325d',
-        lineHeight: '18px',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#aab7c4'
-        }
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a'
-      }
-    };
-    this.card = elements.create('card', { style: style });
+    // Creates Stripe.js element
+    this.card = elements.create('card');
     this.card.mount('#card-element');
-    this.card.addEventListener('change', function (event) {
-      const displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
   }
 
   // When page is loaded
@@ -101,7 +78,14 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
   // Creates booking
   async createBooking() {
     // Waits for stripe token to be created from Stripe.js
-    const { token, error } = await stripe.createToken(this.card);
+    const { token, error } = await stripe.createToken(this.card, {
+      name: this.cardName
+    });
+    if (error) {
+      return;
+    } else {
+      console.log('Success!', token);
+    }
     // Update total and miles from service
     this.bookings.total = this.flightService.total;
     this.bookings.totalMiles = this.flightService.totalMiles;
@@ -117,15 +101,10 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
           description: `Charge for Booking ID: ${bookingId}`,
           amount: this.bookings.total
         };
-        if (error) {
-          console.log('Something is wrong:', error);
-        } else {
-          console.log('Success!', token);
-          // Checkout using Stripe API
-          this.flightService.checkout(chargeJSON).subscribe(charge => {
-            console.log(charge);
-          });
-        }
+        // Checkout using Stripe API
+        this.flightService.checkout(chargeJSON).subscribe(charge => {
+          console.log(charge);
+        });
         // Send to invoice page
         this.router.navigateByUrl(`/invoice/${bookingId}`);
       });

@@ -11,29 +11,9 @@ export class SidebarSearchComponent implements OnInit {
   departures: any = [];
   destinations: any = [];
   allFlights: any = [];
-  public travelClasses: Array<any> = [
-    {
-      class: 'Economy'
-    },
-    {
-      class: 'Business'
-    },
-    {
-      class: 'First'
-    }
-  ];
-
-  public fareClasses: Array<any> = [
-    {
-      class: 'Adult'
-    },
-    {
-      class: 'Senior'
-    },
-    {
-      class: 'Child'
-    }
-  ];
+  public travelClasses: Array<string> = ['Economy', 'Business', 'First'];
+  public stops: Array<Number> = [0, 1, 2, 3, 4];
+  public fareClasses: Array<string> = ['Adult', 'Senior', 'Child'];
 
   constructor(public flightService: FlightService,
     private router: Router) { }
@@ -61,7 +41,7 @@ export class SidebarSearchComponent implements OnInit {
     this.destinations = [];
     for (const flight of this.allFlights) {
       if (flight.departure === this.flightService.searchParameters.departure && !this.destinations.includes(flight.arrival)) {
-        this.destinations.push(flight.arrival)
+        this.destinations.push(flight.arrival);
       }
     }
   }

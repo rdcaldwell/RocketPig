@@ -48,7 +48,7 @@ ROUTER.get('/username-validation/:id', (req, res) => {
   };
   // Customer database query on passed id
   CUSTOMER.findOne({
-    username: req.params.username,
+    username: req.params.id,
   }, (err, customer) => {
     if (!customer) jsonData.found = false;
     else jsonData.found = true;
@@ -128,53 +128,57 @@ ROUTER.post('/booking/new', (req, res) => {
   booking.city = req.body.city;
   booking.state = req.body.state;
   booking.zip = req.body.zip;
-  // Customer database query on passed customerId
-  CUSTOMER.findOne({
-    _id: booking.customerId,
-  }, (customerErr, customer) => {
-    // Increments customer's miles
-    customer.miles += booking.totalMiles;
-    // If the customer does not have an active reward
-    if (!customer.hasActiveReward) {
-      // Decrement miles to next reward
-      customer.milesToNextReward -= booking.totalMiles;
-      // If the customer has passed the reward miles threshold
-      if (customer.milesToNextReward <= 0) {
-        // Create new reward
-        const reward = new REWARD();
-        reward.used = false;
-        // Bind reward to customer
-        customer.rewardId = reward._id;
-        customer.hasActiveReward = true;
-        // Reset mileage threshold
-        customer.milesToNextReward = 10000;
-        // Save documents to db
-        reward.save();
-        customer.save();
-      }
-      // If customer reward code matches passed reward code
-    } else if (customer.rewardId.toString() === req.body.rewardCode) {
-      // Reward database query on passed rewardCode
-      REWARD.findOne({
-        _id: req.body.rewardCode,
-      }, (rewardErr, usedReward) => {
-        // If code is not used
-        if (!usedReward.used) {
-          // Set code to used
-          usedReward.used = true;
-          // Remove active reward from customer
-          customer.hasActiveReward = false;
-          // Remove reward code
-          customer.rewardId = null;
+  // If customer is valid
+  if (req.body.customerId) {
+    // Customer database query on passed customerId
+    CUSTOMER.findOne({
+      _id: booking.customerId,
+    }, (customerErr, customer) => {
+      // Increments customer's miles
+      customer.miles += booking.totalMiles;
+      // If the customer does not have an active reward
+      if (!customer.hasActiveReward) {
+        // Decrement miles to next reward
+        customer.milesToNextReward -= booking.totalMiles;
+        // If the customer has passed the reward miles threshold
+        if (customer.milesToNextReward <= 0) {
+          // Create new reward
+          const reward = new REWARD();
+          reward.used = false;
+          // Bind reward to customer
+          customer.rewardId = reward._id;
+          customer.hasActiveReward = true;
+          // Reset mileage threshold
+          customer.milesToNextReward = 10000;
+          // Save documents to db
+          reward.save();
+          customer.save();
         }
-        // Save documents to db
-        usedReward.save();
-        customer.save();
-      });
-    }
-    // Save documents to db
-    customer.save();
-  });
+        // If customer reward code matches passed reward code
+      } else if (customer.rewardId.toString() === req.body.rewardCode) {
+        // Reward database query on passed rewardCode
+        REWARD.findOne({
+          _id: req.body.rewardCode,
+        }, (rewardErr, usedReward) => {
+          // If code is not used
+          if (!usedReward.used) {
+            // Set code to used
+            usedReward.used = true;
+            // Remove active reward from customer
+            customer.hasActiveReward = false;
+            // Remove reward code
+            customer.rewardId = null;
+          }
+          // Save documents to db
+          usedReward.save();
+          customer.save();
+        });
+      }
+      // Save documents to db
+      customer.save();
+    });
+  }
+
   // Save documents to db
   booking.save(() => {
     res.json(booking._id);

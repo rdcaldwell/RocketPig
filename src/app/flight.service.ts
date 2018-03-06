@@ -21,7 +21,8 @@ export class FlightService {
     bookingType: 'OneWay',
     departDate: new Date(),
     returnDate: new Date(),
-    firstBooked: false
+    firstBooked: false,
+    stops: 0
   };
 
   constructor(private http: Http) { }
@@ -142,4 +143,5 @@ interface SearchProperties {
   departDate: Date;
   returnDate: Date;
   firstBooked: boolean;
+  stops: Number;
 }
