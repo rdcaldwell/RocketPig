@@ -5,7 +5,6 @@ const stripe = require('stripe')(process.env.STRIPE_SK);
 const ASYNC = require('async');
 const GRAPH = require('node-all-paths');
 const MONGOOSE = require('mongoose');
-const CTRL_PROFILE = require('../controllers/profile');
 const CTRL_AUTH = require('../controllers/authentication');
 
 const CUSTOMER = MONGOOSE.model('Customer');
@@ -20,10 +19,13 @@ const AUTH = JWT({
   userProperty: 'payload',
 });
 
-/* User Authorization Controllers */
-ROUTER.get('/profile', AUTH, CTRL_PROFILE.profileRead);
+/* Authentication Controllers */
+ROUTER.get('/profile', AUTH, CTRL_AUTH.profileRead);
 ROUTER.post('/register', CTRL_AUTH.register);
 ROUTER.post('/login', CTRL_AUTH.login);
+ROUTER.get('/username-validation/:id', CTRL_AUTH.validateUsername);
+ROUTER.get('/email-validation/:id', CTRL_AUTH.validateEmail);
+ROUTER.post('/reward-validation/', CTRL_AUTH.validateReward);
 
 /* Stripe checkout */
 ROUTER.post('/checkout', (req, res) => {
@@ -37,60 +39,6 @@ ROUTER.post('/checkout', (req, res) => {
   }, (err, charge) => {
     if (err) res.json(err);
     else res.json(charge);
-  });
-});
-
-/* Checks if username is taken */
-ROUTER.get('/username-validation/:id', (req, res) => {
-  // Retrun data if username is found
-  const jsonData = {
-    found: false,
-  };
-  // Customer database query on passed id
-  CUSTOMER.findOne({
-    username: req.params.id,
-  }, (err, customer) => {
-    if (!customer) jsonData.found = false;
-    else jsonData.found = true;
-    res.json(jsonData);
-  });
-});
-
-/* Checks if email is taken */
-ROUTER.get('/email-validation/:id', (req, res) => {
-  // Retrun data if email is found
-  const jsonData = {
-    found: false,
-  };
-  // Customer database query on passed email
-  CUSTOMER.findOne({
-    email: req.params.id,
-  }, (err, customer) => {
-    if (!customer) jsonData.found = false;
-    else jsonData.found = true;
-    res.json(jsonData);
-  });
-});
-
-/* Checks if reward code is valid */
-ROUTER.post('/reward-validation/', (req, res) => {
-  // Customer database query on passed customerId
-  CUSTOMER.findOne({
-    _id: req.body.customerId,
-  }, (customerErr, customer) => {
-    // Reward database query on passed rewardCode
-    REWARD.findOne({
-      _id: req.body.rewardCode,
-    }, (rewardErr, reward) => {
-      // Saves if the code has been used
-      const isCodeUsed = reward.used;
-      // If the code is not used and the customer's reward id matches the passed rewardCode
-      if (!isCodeUsed && customer.rewardId.toString() === req.body.rewardCode) {
-        res.json('Reward code applied successfully');
-      } else {
-        res.json('Reward code not valid');
-      }
-    });
   });
 });
 
@@ -112,7 +60,7 @@ ROUTER.get('/flight/new', (req, res) => {
 
 /* Creates new booking */
 ROUTER.post('/booking/new', (req, res) => {
-  // Creates new booking document passed on data passed from client side
+  // Creates new booking document on data passed from client side
   const booking = new BOOKING();
   booking.customerId = req.body.customerId;
   // Reward code is null if it is blank
@@ -179,9 +127,33 @@ ROUTER.post('/booking/new', (req, res) => {
     });
   }
 
-  // Save documents to db
-  booking.save(() => {
-    res.json(booking._id);
+  ASYNC.forEachOf(req.body.tickets, (ticketId, index, callback) => {
+    // Ticket database query on ticket id
+    TICKET.findOne({
+      _id: ticketId,
+    }, (ticketErr, ticket) => {
+      if (ticketErr) res.json(ticketErr);
+      else {
+        // Flight database query on ticket's flight id
+        FLIGHT.findOne({
+          _id: ticket.flight,
+        }, (flightErr, flight) => {
+          if (flightErr) res.json(flightErr);
+          else {
+            // Remove seats from flight
+            flight.seatsLeft -= 1;
+            flight.save();
+          }
+        });
+      }
+    });
+    callback();
+  }, (err) => {
+    if (err) res.json(err);
+    // Save booking documents to db
+    booking.save(() => {
+      res.json(booking._id);
+    });
   });
 });
 
@@ -299,13 +271,16 @@ ROUTER.post('/flights', (req, res) => {
       }, (departureFindErr, departureflights) => {
         // Asynchronous for loop for all flights departures
         ASYNC.forEachOf(departureflights, (departureflight, index2, callback2) => {
-          /* Builds arrival JavaScript object with the distance
-           to the arrival location from departure */
-          arrivals[departureflight.arrival] = departureflight.distance;
+          // Graph does not include flights with no seats
+          if (departureflight.seatsLeft !== 0) {
+            /* Builds arrival JavaScript object with the distance
+             to the arrival location from departure */
+            arrivals[departureflight.arrival] = departureflight.distance;
+          }
           callback2();
         }, (departureLoopErr) => {
           if (departureLoopErr) return;
-          /* Adds node to route graph with all destinations with there distances
+          /* Adds node to route graph with all destinations with their distances
            coming from a particular departure */
           ROUTE.addNode(flight.departure, arrivals);
         });

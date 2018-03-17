@@ -37,13 +37,13 @@
       <div class="form-group row">
         <label for="example-email-input" class="col-4 col-form-label">Total Miles</label>
         <div class="col-6">
-          <input class="form-control" type="text" readonly class="form-control-plaintext" value="{{ customerProfile?.miles }}">
+          <input class="form-control" type="text" readonly class="form-control-plaintext" value="{{ customerProfile?.miles | number : '1.2-2'  }}">
         </div>
       </div>
       <div *ngIf="!customerProfile?.hasActiveReward" class="form-group row">
         <label for="example-email-input" class="col-4 col-form-label">Miles To Next Reward</label>
         <div class="col-6">
-          <input class="form-control" type="text" readonly class="form-control-plaintext" value="{{ customerProfile?.milesToNextReward }}">
+          <input class="form-control" type="text" readonly class="form-control-plaintext" value="{{ customerProfile?.milesToNextReward | number : '1.2-2'  }}">
         </div>
       </div>
       <div *ngIf="customerProfile?.hasActiveReward" class="form-group row">

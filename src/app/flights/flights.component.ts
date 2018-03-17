@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlightService } from '../flight.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-flights',
@@ -10,14 +11,15 @@ export class FlightsComponent implements OnInit {
   flights: any = [];
   title: string;
 
-  constructor(public flightService: FlightService) { }
+  constructor(public flightService: FlightService,
+    private router: Router) { }
 
   // When page is loaded
   ngOnInit() {
     // Sets flights in service
     this.flightService.setFlights();
     // If booking type is round trip and the departure has been booked
-    if (this.flightService.searchParameters.bookingType === 'RoundTrip' && this.flightService.searchParameters.firstBooked) {
+    if (this.router.url == '/flights/return') {
       this.title = 'Return Flights';
     } else {
       this.title = 'Departure Flights';
