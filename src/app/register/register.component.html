@@ -40,7 +40,7 @@
               placeholder="Password" [(ngModel)]="credentials.password"
               [ngClass]="{'is-valid': credentials.password.length >= 6}">
           </div>
-          <div *ngIf=" credentials.password.length < 6" class="invalid-feedback">
+          <div *ngIf="credentials.password.length < 6" class="invalid-feedback">
             Please enter a password greater than or equal to 6 characters.
           </div> 
           <button type="submit" class="btn btn-primary" [disabled]="usernameFound ||
