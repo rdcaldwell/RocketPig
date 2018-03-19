@@ -12,11 +12,6 @@
           <div class="row">{{ flight.stops }} stops</div>
         </div>
       </div>
-      <div class="airline-pic">
-        <div class="col-lg-2">
-          <img src="/assets/img/{{ airlineCode }}.png" height="50" alt="{{ flight.airline }}">
-        </div>
-      </div>
       <div class="col-lg-3">
         <div class="row">{{ flight.departureDate | amDateFormat: 'M/D/YYYY h:mm A'}}</div>
         <div class="row">{{ flight.departure }}</div>

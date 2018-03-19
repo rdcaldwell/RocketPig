@@ -10,6 +10,8 @@ const FlightSchema = new mongoose.Schema({
   seatsLeft: Number,
   price: Number,
   airline: String,
+}, {
+  collection: 'flights',
 });
 
 mongoose.model('Flight', FlightSchema);

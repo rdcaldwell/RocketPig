@@ -18,7 +18,6 @@ export class FlightPackageComponent implements OnInit {
   cart: any = {};
   data: any = [];
   customerId = null;
-  airlineCode: string;
 
   constructor(private flightService: FlightService,
     private authenticationService: AuthenticationService,
@@ -45,8 +44,6 @@ export class FlightPackageComponent implements OnInit {
       miles: this.getTotalMiles(),
       airline: this.flights[0].airline
     };
-
-    this.setAirlineCodes();
 
     // Sets options from search parameters
     this.bookingType = this.flightService.searchParameters.bookingType;
@@ -141,19 +138,6 @@ export class FlightPackageComponent implements OnInit {
       }
       return 0;
     });
-  }
-
-  // Sets airline codes for pictures
-  setAirlineCodes() {
-    if (this.flight.airline === 'American Airlines') {
-      this.airlineCode = 'aa';
-    } else if (this.flight.airline === 'United Airlines') {
-      this.airlineCode = 'united';
-    } else if (this.flight.airline === 'Delta Airlines') {
-      this.airlineCode = 'delta';
-    } else if (this.flight.airline === 'Frontier Airlines') {
-      this.airlineCode = 'front';
-    }
   }
 }
 
