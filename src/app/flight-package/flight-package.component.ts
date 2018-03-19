@@ -147,6 +147,12 @@ export class FlightPackageComponent implements OnInit {
   setAirlineCodes() {
     if (this.flight.airline === 'American Airlines') {
       this.airlineCode = 'aa';
+    } else if (this.flight.airline === 'United Airlines') {
+      this.airlineCode = 'united';
+    } else if (this.flight.airline === 'Delta Airlines') {
+      this.airlineCode = 'delta';
+    } else if (this.flight.airline === 'Frontier Airlines') {
+      this.airlineCode = 'front';
     }
   }
 }
