@@ -12,6 +12,7 @@ const FLIGHT = MONGOOSE.model('Flight');
 const BOOKING = MONGOOSE.model('Booking');
 const TICKET = MONGOOSE.model('Ticket');
 const REWARD = MONGOOSE.model('Reward');
+const GAME = MONGOOSE.model('Games');
 
 const ROUTER = EXPRESS.Router();
 const AUTH = JWT({
@@ -55,6 +56,22 @@ ROUTER.get('/flight/new', (req, res) => {
   flight.airline = 'American Airlines';
   flight.save(() => {
     res.json(`${flight.number} saved`);
+  });
+});
+
+ROUTER.post('/game/new', (req, res) => {
+  const game = new GAME();
+  game.personId = req.body.customerId;
+  game.itemName = req.body.itemName;
+  game.description  = req.body.description;
+  game.tags = req.body.tags;
+  game.price = req.body.price;
+  game.sold = false;
+  game.postedDate = new Date();
+  game.image.data = req.body.image;
+  game.image.contentType = "image/png";
+  game.save(() => {
+    res.json(`${game._id} saved`);
   });
 });
 

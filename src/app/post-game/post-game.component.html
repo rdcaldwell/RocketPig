@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <section class="registerCard">
+        <h1>Post Game</h1>
+        <form (submit)="createNewGame()">
+          <div class="form-group">
+            <input type="text" class="form-control" name="itemName" 
+              placeholder="Item Name" [(ngModel)]="gameData.itemName">             
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" name="email"
+              placeholder="Description" #isEmail="ngModel" [(ngModel)]="gameData.description">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="price"
+              placeholder="Price" [(ngModel)]="gameData.price">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="tags"
+              placeholder="Tags" [(ngModel)]="gameData.tags">
+          </div>
+          <div class="form-group">
+            <input type="file" class="form-control" name="image"
+              placeholder="Image" (change)="onFileChanged($event)">
+          </div>
+          <button type="submit" class="btn btn-primary">Post Game</button>
+        </form>  
+      </section>
+    </div>
+  </div>
+</div>

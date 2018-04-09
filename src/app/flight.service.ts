@@ -37,6 +37,10 @@ export class FlightService {
     return this.http.get(`/api/flights/all`).map(res => res.json());
   }
 
+  createNewGame(gameData) {
+    return this.http.post(`/api/game/new`, gameData).map(res => res.json());
+  }
+
   // Sets flights for display in application
   setFlights() {
     this.getFlights().subscribe(data => {

@@ -23,3 +23,4 @@ require('./booking');
 require('./flight');
 require('./reward');
 require('./ticket');
+require('./games');

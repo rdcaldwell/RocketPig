@@ -34,6 +34,7 @@ import {
 } from '@angular/material';
 import { SidebarSearchComponent } from './sidebar-search/sidebar-search.component';
 import { FooterComponent } from './footer/footer.component';
+import { PostGameComponent } from './post-game/post-game.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -44,6 +45,7 @@ const routes: Routes = [
   { path: 'booking', component: BookingComponent },
   { path: ':username', component: ProfileComponent, canActivate: [AuthenticationService] },
   { path: 'invoice/:id', component: InvoiceComponent },
+  { path: 'game/new', component: PostGameComponent },
 ];
 
 @NgModule({
@@ -64,7 +66,8 @@ const routes: Routes = [
     TicketComponent,
     CartComponent,
     SidebarSearchComponent,
-    FooterComponent
+    FooterComponent,
+    PostGameComponent
   ],
   imports: [
     BrowserModule,
