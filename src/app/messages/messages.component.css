@@ -1,0 +1,16 @@
+.message {
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.message:last-of-type {
+    border-bottom: none;
+  }
+
+.message-attribute {
+  height: 40px;
+}
+
+.message-attribute>span {
+  line-height: 40px;
+}

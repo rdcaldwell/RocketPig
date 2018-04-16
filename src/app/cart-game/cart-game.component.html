@@ -1,0 +1,15 @@
+<section class="gameCard">
+  <div class="row">
+    <div class="col-md-4">
+      <span class="float-right">{{ game.itemName }}</span>
+      <br>
+      <span class="float-right">${{ game.price }}</span>
+    </div>
+    <div class="col-md-8">
+      <div class="text-center" *ngIf="imageLoading">
+        <i class="fas fa-spinner fa-pulse"></i>
+      </div>
+      <img *ngIf="!imageLoading" class="img-thumbnail float-right" [src]="gameImage">
+    </div>
+  </div>
+</section>

@@ -13,6 +13,7 @@ const BOOKING = MONGOOSE.model('Booking');
 const TICKET = MONGOOSE.model('Ticket');
 const REWARD = MONGOOSE.model('Reward');
 const GAME = MONGOOSE.model('Games');
+const MESSAGE = MONGOOSE.model('Message');
 
 const ROUTER = EXPRESS.Router();
 const AUTH = JWT({
@@ -24,6 +25,7 @@ const AUTH = JWT({
 ROUTER.get('/profile', AUTH, CTRL_AUTH.profileRead);
 ROUTER.post('/register', CTRL_AUTH.register);
 ROUTER.post('/login', CTRL_AUTH.login);
+ROUTER.get('/user/:id', CTRL_AUTH.getUserByid);
 ROUTER.get('/username-validation/:id', CTRL_AUTH.validateUsername);
 ROUTER.get('/email-validation/:id', CTRL_AUTH.validateEmail);
 ROUTER.post('/reward-validation/', CTRL_AUTH.validateReward);
@@ -43,19 +45,23 @@ ROUTER.post('/checkout', (req, res) => {
   });
 });
 
-ROUTER.get('/flight/new', (req, res) => {
-  const flight = new FLIGHT();
-  flight.departure = 'RSW';
-  flight.arrival = 'DFW';
-  flight.departureDate = new Date('March 3, 2018 12:50:00');
-  flight.arrivalDate = new Date('March 3, 2018 14:25:00');
-  flight.number = 2222;
-  flight.distance = 1224.23;
-  flight.seatsLeft = 25;
-  flight.price = 100;
-  flight.airline = 'American Airlines';
-  flight.save(() => {
-    res.json(`${flight.number} saved`);
+ROUTER.get('/game/img/:id', (req, res) => {
+  GAME.findOne({
+    _id: req.params.id,
+  }, (err, game) => {
+    if (err) res.send(err);
+    else {
+      const img = Buffer.from(game.image.data, 'base64');
+      res.send(img);
+    }
+  });
+});
+
+ROUTER.get('/games', (req, res) => {
+  GAME.find({
+    sold: false,
+  }, (err, games) => {
+    res.json(games);
   });
 });
 
@@ -63,15 +69,18 @@ ROUTER.post('/game/new', (req, res) => {
   const game = new GAME();
   game.personId = req.body.customerId;
   game.itemName = req.body.itemName;
-  game.description  = req.body.description;
+  game.description = req.body.description;
   game.tags = req.body.tags;
   game.price = req.body.price;
   game.sold = false;
+  game.bookingId = null;
   game.postedDate = new Date();
+  game.soldDate = null;
   game.image.data = req.body.image;
-  game.image.contentType = "image/png";
-  game.save(() => {
-    res.json(`${game._id} saved`);
+  game.image.contentType = 'image/png';
+  game.save((err) => {
+    if (err) res.json(err);
+    else res.json(`${game.itemName} saved`);
   });
 });
 
@@ -83,6 +92,7 @@ ROUTER.post('/booking/new', (req, res) => {
   // Reward code is null if it is blank
   booking.rewardCode = (req.body.rewardCode === '') ? null : req.body.rewardCode;
   booking.tickets = req.body.tickets;
+  booking.games = req.body.games;
   booking.bookingDate = req.body.date;
   booking.total = req.body.total;
   booking.totalMiles = req.body.totalMiles;
@@ -165,11 +175,35 @@ ROUTER.post('/booking/new', (req, res) => {
       }
     });
     callback();
-  }, (err) => {
-    if (err) res.json(err);
-    // Save booking documents to db
-    booking.save(() => {
-      res.json(booking._id);
+  }, (ticketsLoopErr) => {
+    if (ticketsLoopErr) res.json(ticketsLoopErr);
+    ASYNC.forEachOf(req.body.games, (gameId, index, callback) => {
+      // Ticket database query on ticket id
+      GAME.findOne({
+        _id: gameId,
+      }, (gameErr, game) => {
+        if (gameErr) res.json(gameErr);
+        else {
+          game.sold = true;
+          game.bookingId = booking._id;
+          game.soldDate = new Date();
+          game.save();
+
+          const message = new MESSAGE();
+          message.sellerId = game.personId;
+          message.bookingId = booking._id;
+          message.body = `Your game ${game.itemName} has been sold!`;
+          message.sentDate = new Date();
+          message.save();
+        }
+      });
+      callback();
+    }, (gamesLoopErr) => {
+      if (gamesLoopErr) console.log(gamesLoopErr);
+      // Save booking documents to db
+      booking.save(() => {
+        res.json(booking._id);
+      });
     });
   });
 });
@@ -208,6 +242,16 @@ ROUTER.get('/booking/:id', (req, res) => {
   });
 });
 
+ROUTER.post('/seller/rating', (req, res) => {
+  CUSTOMER.findOne({
+    _id: req.body.id,
+  }, (err, seller) => {
+    seller.ratings.push(req.body.rating);
+    seller.save();
+    res.json(`${seller.username} rated ${req.body.rating} stars`);
+  });
+});
+
 /* Get customer bookings by customerId */
 ROUTER.get('/bookings/customer/:id', (req, res) => {
   // Booking database query on passed customerId
@@ -227,6 +271,40 @@ ROUTER.get('/ticket/:id', (req, res) => {
   }, (err, ticket) => {
     // Respond ticket object back to client
     res.json(ticket[0]);
+  });
+});
+
+/* Get tickets by id */
+ROUTER.get('/game/:id', (req, res) => {
+  // Ticket database query on passed id
+  GAME.find({
+    _id: req.params.id,
+  }, (err, game) => {
+    // Respond ticket object back to client
+    res.json(game[0]);
+  });
+});
+
+/* Get messages by seller id */
+ROUTER.get('/messages/seller/:id', (req, res) => {
+  // Message database query on passed id
+  MESSAGE.find({
+    sellerId: req.params.id,
+  }, (err, messages) => {
+    // Respond messages object back to client
+    res.json(messages);
+  });
+});
+
+/* Get tickets by id */
+ROUTER.get('/games/seller/:id', (req, res) => {
+  // Ticket database query on passed id
+  GAME.find({
+    personId: req.params.id,
+    sold: true,
+  }, (err, games) => {
+    // Respond ticket object back to client
+    res.json(games);
   });
 });
 

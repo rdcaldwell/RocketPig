@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { FlightService } from '../flight.service';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-post-game',
@@ -18,27 +18,40 @@ export class PostGameComponent implements OnInit {
     image: null
   };
 
-  constructor(public authenticationService: AuthenticationService, public flightService: FlightService) { }
+  filename = 'Choose file';
+
+  constructor(public authenticationService: AuthenticationService, public gameService: GameService) { }
 
   ngOnInit() {
   }
 
   createNewGame() {
-    this.flightService.createNewGame(this.gameData).subscribe();
+    this.gameService.createNewGame(this.gameData).subscribe(data => {
+      alert(data);
+    });
   }
 
   onFileChanged(event: any) {
-    console.log(event.target.files);
-    this.gameData.image = event.target.files;
+    if (event.target.files[0].size > 70000) {
+      alert('The image file is too large. Upload a file less than 70 KB.');
+    } else {
+      const reader = new FileReader();
+      const image = event.target.files[0];
+      reader.readAsDataURL(image);
+      reader.onload = () => {
+        this.gameData.image = reader.result.split(',')[1];
+        this.filename = image.name;
+      };
+    }
   }
 
 }
 
 export interface GameProperties {
-  customerId: String,
-  description: String,
-  itemName: String,
-  tags: String,
-  price: Number,
-  image: File
+  customerId: String;
+  description: String;
+  itemName: String;
+  tags: String;
+  price: Number;
+  image: File;
 }

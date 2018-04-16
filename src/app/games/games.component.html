@@ -1,0 +1,14 @@
+<div class="container">
+  <form>
+    <mat-form-field class="game-search">
+      <input matInput name="searchQuery" [(ngModel)]="gameService.searchQuery" placeholder="Search for games...">
+    </mat-form-field>
+  </form>
+  <div class="row">
+    <ng-container *ngFor="let game of games">
+      <div class="col-md-4" *ngIf="gameService.searchQuery === undefined || game.itemName.includes(gameService.searchQuery) || game.tags.includes(gameService.searchQuery)">
+        <app-game [game]="game"></app-game>
+      </div>
+    </ng-container>
+  </div>
+</div>

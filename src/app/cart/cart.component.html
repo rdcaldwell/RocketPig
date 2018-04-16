@@ -1,5 +1,6 @@
 <a data-toggle="modal" data-target="#cart">
-  <i class="fas fa-shopping-cart"></i> {{ flightService.numberOfItems }}
+  <i class="fas fa-shopping-cart"></i>
+  <span>{{ cartService.numberOfItems }}</span>
 </a>
 
 <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -12,11 +13,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <ng-container *ngFor="let flight of flightService.flights; let i = index">
+        <h4>Flights</h4>
+        <ng-container *ngFor="let flight of cartService.flights; let i = index">
           <div class="row">
             <div class="col-md-11">
               <app-flight [flight]="flight"></app-flight>
-              <span *ngIf="!flightService.flights[0]">Your shopping cart is empty</span>
+              <span *ngIf="!cartService.flights[0]">Your shopping cart has no flights</span>
             </div>
             <div class="col-md-1">
               <button type="button" class="btn btn-outline-danger" (click)="remove(i, flight.price, flight.distance)">
@@ -25,16 +27,28 @@
             </div>
           </div>
         </ng-container>
+        <h4 style="padding-top: 1rem">Games</h4>
+        <ng-container *ngFor="let game of cartService.games; let i = index">
+          <div class="row">
+            <div class="col-md-7">
+              <app-cart-game [game]="game"></app-cart-game>
+              <span *ngIf="!cartService.games[0]">Your shopping cart has no games</span>
+            </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-outline-danger" (click)="removeGame(i, game.price)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
+        </ng-container>
       </div>
       <div class="modal-footer">
-        <div *ngIf="!flights" class="mr-auto">
-          <span>Total Tickets: {{ flightService.numberOfItems }}</span>
-          <br>
-          <span>Toal Miles: {{ flightService.totalMiles }}</span>
-          <br>
-          <h4>Total: ${{ flightService.total }}</h4>
+        <div class="mr-auto">
+          <p>Total Items: {{ cartService.numberOfItems }}</p>
+          <p>Toal Miles: {{ cartService.totalMiles }}</p>
+          <h4>Total: ${{ cartService.total | number : '1.2-2' }}</h4>
         </div>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!flightService.flights[0]" routerLink="/booking">Check out</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="!cartService.flights[0]" routerLink="/booking">Check out</button>
       </div>
     </div>
   </div>

@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Sales History</h3>
+    </div>
+    <div class="col-md-6">
+      <h3 class="float-right">Total Sales: ${{ totalSales | number : '1.2-2' }}</h3>
+    </div>
+  </div>
+  <table id="purchaseHistory" class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Posted Date</th>
+        <th scope="col">Sold Date</th>
+        <th scope="col">Price</th>
+        <th scope="col">Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let game of games">
+        <tr>
+          <td>{{ game.itemName }}</td>
+          <td>{{ game.postedDate | amDateFormat: 'MMMM Do, YYYY h:mm A'}}</td>
+          <td>{{ game.soldDate | amDateFormat: 'MMMM Do, YYYY h:mm A'}}</td>
+          <td>${{ game.price }}</td>
+          <td>
+            <button role="button" class="btn btn-primary" [routerLink]="['/invoice', game.bookingId]">View</button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

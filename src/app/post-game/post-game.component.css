@@ -1,0 +1,16 @@
+.custom-file {
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  width: 100%;
+}
+
+.container {
+  background-color: #f4f3f4;
+  margin: auto;
+  border: 1px solid #c0c5c8;
+  padding: 45px;
+  margin-top: 10px;
+}

@@ -32,6 +32,7 @@ const CustomerSchema = new mongoose.Schema({
   hasActiveReward: Boolean,
   hash: String,
   salt: String,
+  ratings: [Number],
 });
 
 CustomerSchema.methods.setPassword = function (password) {

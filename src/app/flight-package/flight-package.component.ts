@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FlightService } from '../flight.service';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-flight-package',
@@ -21,6 +22,7 @@ export class FlightPackageComponent implements OnInit {
 
   constructor(private flightService: FlightService,
     private authenticationService: AuthenticationService,
+    private cartService: CartService,
     private router: Router) { }
 
   // When page is loaded
@@ -62,6 +64,7 @@ export class FlightPackageComponent implements OnInit {
 
     // Data object for cart
     this.data = {
+      games: [],
       bookingData: {
         customerId: this.customerId,
         total: this.getTotal(),
@@ -93,8 +96,8 @@ export class FlightPackageComponent implements OnInit {
     // Save cart to session
     localStorage.setItem('cart', JSON.stringify(this.cart));
     // Update cart contents
-    this.flightService.updateCart();
-    this.flightService.updateFlightsInCart();
+    this.cartService.updateCart();
+    this.cartService.updateFlightsInCart();
     // If the booking is round trip and the departure has not been booked
     if (this.bookingType === 'RoundTrip' && !this.flightService.searchParameters.firstBooked) {
       // Save departure as booked

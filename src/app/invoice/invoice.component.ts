@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { FlightService } from '../flight.service';
 import { ActivatedRoute } from '@angular/router';
+import { GameService } from '../game.service';
+import { RatingChangeEvent } from 'angular-star-rating';
+
 @Component({
   selector: 'app-invoice',
   templateUrl: './invoice.component.html',
@@ -14,9 +17,13 @@ export class InvoiceComponent implements OnInit {
   booking: any = {};
   flights: any = [];
   tickets: any = [];
+  games: any = [];
+  rating: number;
+
   constructor(private authenticationService: AuthenticationService,
-              private activatedRoute: ActivatedRoute,
-              private flightService: FlightService) { }
+    private activatedRoute: ActivatedRoute,
+    private flightService: FlightService,
+    private gameService: GameService) { }
 
   // On page load
   ngOnInit() {
@@ -37,6 +44,21 @@ export class InvoiceComponent implements OnInit {
           });
         });
       }
+      for (const game of this.booking.games) {
+        this.gameService.getGame(game).subscribe(gameData => {
+          this.games.push(gameData);
+        });
+      }
+    });
+  }
+
+  onRatingChange(event: RatingChangeEvent) {
+    this.rating = event.rating;
+  }
+
+  submitRating(sellerId) {
+    this.gameService.postSellerRating(sellerId, this.rating).subscribe(data => {
+      alert(data);
     });
   }
 

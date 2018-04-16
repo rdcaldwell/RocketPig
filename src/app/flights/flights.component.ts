@@ -19,7 +19,7 @@ export class FlightsComponent implements OnInit {
     // Sets flights in service
     this.flightService.setFlights();
     // If booking type is round trip and the departure has been booked
-    if (this.router.url == '/flights/return') {
+    if (this.router.url === '/flights/return') {
       this.title = 'Return Flights';
     } else {
       this.title = 'Departure Flights';

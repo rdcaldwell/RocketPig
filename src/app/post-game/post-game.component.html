@@ -1,31 +1,27 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-6">
       <section class="registerCard">
-        <h1>Post Game</h1>
+        <h3>Post Game</h3>
         <form (submit)="createNewGame()">
           <div class="form-group">
-            <input type="text" class="form-control" name="itemName" 
-              placeholder="Item Name" [(ngModel)]="gameData.itemName">             
+            <input type="text" class="form-control" name="itemName" placeholder="Item Name" [(ngModel)]="gameData.itemName">
           </div>
           <div class="form-group">
-            <input type="email" class="form-control" name="email"
-              placeholder="Description" #isEmail="ngModel" [(ngModel)]="gameData.description">
+            <input type="email" class="form-control" name="email" placeholder="Description" #isEmail="ngModel" [(ngModel)]="gameData.description">
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" name="price"
-              placeholder="Price" [(ngModel)]="gameData.price">
+            <input type="text" class="form-control" name="price" placeholder="Price" [(ngModel)]="gameData.price">
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" name="tags"
-              placeholder="Tags" [(ngModel)]="gameData.tags">
+            <input type="text" class="form-control" name="tags" placeholder="Tags" [(ngModel)]="gameData.tags">
           </div>
-          <div class="form-group">
-            <input type="file" class="form-control" name="image"
-              placeholder="Image" (change)="onFileChanged($event)">
+          <div class="form-group custom-file">
+            <input type="file" class="custom-file-input" id="customFile" name="image" placeholder="Image" (change)="onFileChanged($event)">
+            <label class="custom-file-label" for="customFile">{{ filename }}</label>
           </div>
           <button type="submit" class="btn btn-primary">Post Game</button>
-        </form>  
+        </form>
       </section>
     </div>
   </div>

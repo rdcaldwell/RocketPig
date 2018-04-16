@@ -7,7 +7,9 @@ import { AuthenticationService, Customer } from '../authentication.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+
   customerProfile: Customer;
+  averageRating: number;
 
   constructor(private authenticationService: AuthenticationService) { }
 
@@ -16,9 +18,18 @@ export class ProfileComponent implements OnInit {
     // Gets profile from auth service
     this.authenticationService.profile().subscribe(customer => {
       this.customerProfile = customer;
+      this.getAverageRating();
     }, (err) => {
       console.error(err);
     });
+  }
+
+  getAverageRating() {
+    let total = 0;
+    for (const rating of this.customerProfile.ratings) {
+      total += rating;
+    }
+    this.averageRating = total / this.customerProfile.ratings.length;
   }
 
 }

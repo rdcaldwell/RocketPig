@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const BookingSchema = new mongoose.Schema({
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer' },
   tickets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ticket' }],
+  games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Games' }],
   rewardCode: { type: mongoose.Schema.Types.ObjectId, ref: 'Reward' },
   bookingType: String,
   bookingDate: Date,

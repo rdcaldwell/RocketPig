@@ -1,0 +1,32 @@
+<section class="gameCard">
+  <h3>{{ game.itemName }}</h3>
+  <div class="text-center" *ngIf="imageLoading">
+    <i class="fas fa-spinner fa-pulse"></i>
+  </div>
+  <img *ngIf="!imageLoading" class="img-thumbnail" [src]="gameImage">
+  <div class="description">
+    <div class="attribute">
+      <span class="font-weight-bold">Description:</span>
+      <span class="float-right">{{ game.description }}</span>
+    </div>
+    <div class="attribute">
+      <span class="font-weight-bold">Price:</span>
+      <span class="float-right">${{ game.price }}</span>
+    </div>
+    <div class="attribute">
+      <span class="font-weight-bold">Date posted:</span>
+      <span class="float-right">{{ game.postedDate | amDateFormat: 'M/D/YYYY h:mm A' }}</span>
+    </div>
+    <div class="attribute">
+      <span class="font-weight-bold">Seller:</span>
+      <span class="float-right">{{ user.username }}</span>
+    </div>
+    <div class="attribute">
+      <span class="font-weight-bold">Seller rating:</span>
+      <span class="float-right">
+        <star-rating-comp class="float-right" [readOnly]="true" [showHalfStars]="true" [rating]="averageRating"></star-rating-comp>
+      </span>
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="addToCart()">Add to Cart</button>
+</section>

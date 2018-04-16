@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
 import { Router } from '@angular/router';
 import { FlightService } from '../flight.service';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent  {
 
   constructor(public authenticationService: AuthenticationService,
               private router: Router,
-              private flightService: FlightService) {}
+              private flightService: FlightService,
+              private cartService: CartService) {}
 
   // Login user
   login() {
@@ -27,7 +29,7 @@ export class LoginComponent  {
     // Call api to login user
     this.authenticationService.login(this.credentials).subscribe(() => {
       // Update cart items
-      this.flightService.updateCart();
+      this.cartService.updateCart();
       // Navigate to profile
       this.router.navigateByUrl(`/${this.credentials.username}`);
     }, (err) => {

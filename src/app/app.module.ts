@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { StarRatingModule } from 'angular-star-rating';
 import { AppComponent } from './app.component';
 import { FlightsComponent } from './flights/flights.component';
 import { RegisterComponent } from './register/register.component';
@@ -35,6 +36,13 @@ import {
 import { SidebarSearchComponent } from './sidebar-search/sidebar-search.component';
 import { FooterComponent } from './footer/footer.component';
 import { PostGameComponent } from './post-game/post-game.component';
+import { GameComponent } from './game/game.component';
+import { GamesComponent } from './games/games.component';
+import { GameService } from './game.service';
+import { CartService } from './cart.service';
+import { CartGameComponent } from './cart-game/cart-game.component';
+import { SalesHistoryComponent } from './sales-history/sales-history.component';
+import { MessagesComponent } from './messages/messages.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -42,10 +50,10 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'flights/departure', component: FlightsComponent },
   { path: 'flights/return', component: FlightsComponent },
+  { path: 'games', component: GamesComponent },
   { path: 'booking', component: BookingComponent },
   { path: ':username', component: ProfileComponent, canActivate: [AuthenticationService] },
   { path: 'invoice/:id', component: InvoiceComponent },
-  { path: 'game/new', component: PostGameComponent },
 ];
 
 @NgModule({
@@ -67,7 +75,12 @@ const routes: Routes = [
     CartComponent,
     SidebarSearchComponent,
     FooterComponent,
-    PostGameComponent
+    PostGameComponent,
+    GameComponent,
+    GamesComponent,
+    CartGameComponent,
+    SalesHistoryComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -83,11 +96,14 @@ const routes: Routes = [
     MatFormFieldModule,
     MatRadioModule,
     MatSelectModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    StarRatingModule.forRoot()
   ],
   providers: [
     AuthenticationService,
-    FlightService
+    FlightService,
+    GameService,
+    CartService
   ],
   bootstrap: [AppComponent]
 })

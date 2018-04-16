@@ -1,26 +1,43 @@
 .orderCard {
-    background-color: #f4f3f4;
-    margin: auto;
-    border: 1px solid #c0c5c8;
-    padding: 45px;
-    margin-top: 10px;
-    margin-bottom: 25px;
+  background-color: #f4f3f4;
+  margin: auto;
+  border: 1px solid #c0c5c8;
+  padding: 45px;
+  margin-top: 10px;
+  margin-bottom: 25px;
 }
 
-.trip-time{
-    font-size: 26px;
-    font-weight: 400;
-    color: #505050;
-    width: 90px;
-    justify-content: center;
-    position: relative;
+.trip-time {
+  font-size: 26px;
+  font-weight: 400;
+  color: #505050;
+  width: 90px;
+  justify-content: center;
+  position: relative;
 }
-.trip-stops{
-    font-size: 12px;
-    font-weight: 300;
-    color: #6f6f6f;
+
+.trip-stops {
+  font-size: 12px;
+  font-weight: 300;
+  color: #6f6f6f;
 }
 
 button {
-    margin-top: 25px;
+  margin-top: 25px;
+}
+
+.marginTop15 {
+  margin-top: 15px;
+}
+
+:focus {
+  outline: none !important;
+}
+
+.star-btn {
+  width: 100%;
+}
+
+.star-wrapper {
+  padding: 25px;
 }

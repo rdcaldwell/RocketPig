@@ -1,0 +1,16 @@
+.gameCard {
+    background-color: #f4f3f4;
+    margin: auto;
+    border: 1px solid #c0c5c8;
+    padding: 25px 25px 10px 25px;
+    margin-top: 10px;
+  }
+  
+  .description {
+    padding: 15px;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+  

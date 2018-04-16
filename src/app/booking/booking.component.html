@@ -1,18 +1,18 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-4">
-      <h1>Booking</h1>
-    </div>
-    <div class="col-md-4">
-      <h1>Total: ${{ flightService.total }}</h1>
-    </div>
-    <div class="col-md-4">
-      <button type="button" class="btn btn-outline-primary" routerLink="/flights/departure">Continue Shopping</button>
-    </div>
+  <h1>Booking</h1>
+  <div>
+    <h5>Game Commission: ${{ commission | number : '1.2-2' }}</h5>
+    <h5>Total: ${{ bookings.total | number : '1.2-2' }}</h5>
   </div>
   <h3>Flight Information</h3>
-  <ng-container *ngFor="let flight of flightService.flights">
+  <ng-container *ngFor="let flight of cartService.flights">
     <app-flight [flight]="flight"></app-flight>
+  </ng-container>
+  <h3>On-Flight Games</h3>
+  <ng-container *ngFor="let game of cartService.games">
+    <div class="game-preview">
+      <app-cart-game [game]="game"></app-cart-game>
+    </div>
   </ng-container>
   <form>
     <div class="personalInfo">

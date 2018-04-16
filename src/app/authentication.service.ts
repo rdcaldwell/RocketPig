@@ -6,6 +6,7 @@ import { Router, CanActivate } from '@angular/router';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { FlightService } from './flight.service';
+import { CartService } from './cart.service';
 
 export interface Customer {
   _id: string;
@@ -17,6 +18,7 @@ export interface Customer {
   miles: number;
   milesToNextReward: number;
   hasActiveReward: boolean;
+  ratings: Array<number>;
 }
 
 interface TokenResponse {
@@ -34,6 +36,7 @@ export interface TokenPayload {
   miles?: number;
   milesToNextReward?: number;
   hasActiveReward?: boolean;
+  ratings?: Array<number>;
 }
 
 @Injectable()
@@ -44,7 +47,8 @@ export class AuthenticationService implements CanActivate {
   constructor(private httpClient: HttpClient,
               private http: Http,
               private router: Router,
-              private flightService: FlightService) {}
+              private flightService: FlightService,
+              private cartService: CartService) {}
 
   // Activates route if customer is authenticated
   canActivate() {
@@ -145,8 +149,8 @@ export class AuthenticationService implements CanActivate {
     this.token = '';
     localStorage.removeItem('token');
     localStorage.removeItem('cart');
-    this.flightService.updateCart();
-    this.flightService.updateFlightsInCart();
+    this.cartService.updateCart();
+    this.cartService.updateFlightsInCart();
     this.router.navigateByUrl('/');
   }
 }

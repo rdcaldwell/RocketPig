@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { FlightService } from '../flight.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+import { CartService } from '../cart.service';
+import { GameService } from '../game.service';
 declare var stripe: any;
 declare var elements: any;
 @Component({
@@ -16,6 +18,7 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
     rewardCode: '',
     total: 0,
     tickets: [],
+    games: [],
     date: new Date(),
     firstName: '',
     lastName: '',
@@ -29,10 +32,13 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
   card: any;
   cardName: string;
   codeMessage: string;
+  commission: number;
 
   constructor(public flightService: FlightService,
     private router: Router,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService,
+    public cartService: CartService,
+    private gameService: GameService) { }
 
   // When page is closed
   ngOnDestroy() {
@@ -47,8 +53,18 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.card.mount('#card-element');
   }
 
+  getCommission() {
+    let total = 0;
+    for (const game of this.cartService.cart.games) {
+      total += game.price;
+    }
+    this.commission = total * 0.05;
+    return this.commission;
+  }
+
   // When page is loaded
   ngOnInit() {
+    this.getCommission();
     // Sets user id if user is logged in
     if (this.authenticationService.isLoggedIn()) {
       this.bookings.customerId = this.authenticationService.getCustomer()._id;
@@ -56,21 +72,21 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.bookings.customerId = null;
     }
     // Booking total and miles from cart information
-    this.bookings.total = this.flightService.cart.bookingData.total;
-    this.bookings.totalMiles = this.flightService.cart.bookingData.totalMiles;
-    this.flightService.updateCart();
+    this.bookings.total = this.cartService.cart.bookingData.total + this.commission;
+    this.bookings.totalMiles = this.cartService.cart.bookingData.totalMiles;
+    this.cartService.updateCart();
   }
 
   // Checks reward code validity from api
   checkRewardCode() {
-    this.flightService.checkRewardCode({
+    this.cartService.checkRewardCode({
       customerId: this.bookings.customerId,
       rewardCode: this.bookings.rewardCode
     }).subscribe(status => {
       this.codeMessage = status;
       if (status === 'Reward code applied successfully') {
         // Applies discount if successful
-        this.flightService.total *= .95;
+        this.cartService.total *= .95;
       }
     });
   }
@@ -87,12 +103,15 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('Success!', token);
     }
     // Update total and miles from service
-    this.bookings.total = this.flightService.total;
-    this.bookings.totalMiles = this.flightService.totalMiles;
+    this.bookings.total = this.cartService.total + this.commission;
+    this.bookings.totalMiles = this.cartService.totalMiles;
     // Create ticket objects
-    this.flightService.postTickets(this.flightService.tickets).subscribe(ticketIds => {
+    this.flightService.postTickets(this.cartService.tickets).subscribe(ticketIds => {
       // Saves ticket ids in booking object
       this.bookings.tickets = ticketIds;
+      for (const game of this.cartService.games) {
+        this.bookings.games.push(game._id);
+      }
       // Creates booking object
       this.flightService.postBooking(this.bookings).subscribe(bookingId => {
         // Data for Stripe charge
@@ -102,7 +121,7 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
           amount: this.bookings.total
         };
         // Checkout using Stripe API
-        this.flightService.checkout(chargeJSON).subscribe(charge => {
+        this.cartService.checkout(chargeJSON).subscribe(charge => {
           console.log(charge);
         });
         // Send to invoice page
@@ -110,7 +129,7 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     });
     // Remove all flights from cart
-    this.flightService.removeAllFlights(this.bookings.total);
+    this.cartService.removeAll(this.bookings.total);
   }
 }
 
@@ -119,6 +138,7 @@ interface BookingProperties {
   rewardCode: string;
   total: number;
   tickets: Array<string>;
+  games: Array<string>;
   date: Date;
   firstName: string;
   lastName: string;

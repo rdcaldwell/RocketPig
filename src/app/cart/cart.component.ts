@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlightService } from '../flight.service';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -8,18 +8,23 @@ import { FlightService } from '../flight.service';
 })
 export class CartComponent implements OnInit {
 
-  constructor(public flightService: FlightService) { }
+  constructor(public cartService: CartService) { }
 
   // When page is loaded
   ngOnInit() {
     // Update items in cart
-    this.flightService.updateCart();
-    this.flightService.updateFlightsInCart();
+    this.cartService.updateCart();
+    this.cartService.updateFlightsInCart();
+    this.cartService.updateGamesInCart();
   }
 
   // Remove item from cart
   remove(index: number, price: number, distance: number) {
-    this.flightService.removeFlight(index, price, distance);
+    this.cartService.removeFlight(index, price, distance);
+  }
+
+  removeGame(index: number, price: number) {
+    this.cartService.removeGame(index, price);
   }
 
 }

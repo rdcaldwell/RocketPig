@@ -12,13 +12,15 @@
     </thead>
     <tbody>
       <ng-container *ngFor="let booking of bookings">
-          <tr>
-              <td>{{ booking._id }}</td>
-              <td>{{ booking.bookingDate | amDateFormat: 'MMMM Do, YYYY h:mm A'}}</td>
-              <td>${{ booking.total }}</td>
-              <td>{{ booking.totalMiles }}</td>
-              <td><button role="button" class="btn btn-primary" [routerLink]="['/invoice', booking._id]">View</button></td>
-            </tr>
+        <tr>
+          <td>{{ booking._id }}</td>
+          <td>{{ booking.bookingDate | amDateFormat: 'MMMM Do, YYYY h:mm A'}}</td>
+          <td>${{ booking.total }}</td>
+          <td>{{ booking.totalMiles }}</td>
+          <td>
+            <button role="button" class="btn btn-primary" [routerLink]="['/invoice', booking._id]">View</button>
+          </td>
+        </tr>
       </ng-container>
     </tbody>
   </table>

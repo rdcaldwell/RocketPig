@@ -61,6 +61,13 @@ module.exports.profileRead = (req, res) => {
   }
 };
 
+module.exports.getUserByid = (req, res) => {
+  // Finds customer using  id
+  CUSTOMER.findById(req.params.id).exec((err, customer) => {
+    res.status(200).json(customer);
+  });
+};
+
 /* Checks if username is taken */
 module.exports.validateUsername = (req, res) => {
   // Retrun data if username is found
