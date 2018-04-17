@@ -29,6 +29,11 @@ SERVER.use((err, req, res) => {
   }
 });
 
+setInterval(() => {
+  HTTP.get('http://rocketpig.herokuapp.com');
+  console.log('Pinging heroku...');
+}, 300000);
+
 SERVER.get('*', (req, res) => {
   res.sendFile(PATH.join(__dirname, 'dist/index.html'));
 });

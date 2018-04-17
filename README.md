@@ -2,4 +2,4 @@
 
 Flight aggregator and game auction application
 
-https://rocket-pig.appspot.com/
+https://rocketpig.herokuapp.com
