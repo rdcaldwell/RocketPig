@@ -1,5 +1,5 @@
 # RocketPig
 
-Flight aggregator application
+Flight aggregator and game auction application
 
-https://rocketpig.herokuapp.com
+https://rocket-pig.appspot.com/
