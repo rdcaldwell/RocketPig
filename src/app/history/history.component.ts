@@ -9,8 +9,8 @@ import { FlightService } from '../flight.service';
 })
 export class HistoryComponent implements OnInit {
   // Set customer id from auth service
-  customerId = this.authenticationService.getCustomer()._id;
-  bookings: any = [];
+  public customerId = this.authenticationService.getCustomer()._id;
+  public bookings: any = [];
 
   constructor(private authenticationService: AuthenticationService,
     private flightService: FlightService) { }
