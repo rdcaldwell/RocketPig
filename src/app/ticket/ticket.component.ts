@@ -7,8 +7,10 @@ import { FlightService } from '../flight.service';
   styleUrls: ['./ticket.component.css']
 })
 export class TicketComponent implements OnInit {
-  @Input() private ticket: any;
-  flight: any = {};
+
+  @Input() public ticket: any;
+  public flight: any = {};
+
   constructor(private flightService: FlightService) { }
 
   // On page load

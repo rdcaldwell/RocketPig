@@ -5,9 +5,9 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FlightService {
-  availableFlights: any = [];
 
-  searchParameters: SearchProperties = {
+  public availableFlights: any = [];
+  public searchParameters: SearchProperties = {
     departure: '',
     destination: '',
     travelClass: '',

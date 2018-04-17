@@ -10,15 +10,16 @@ import { CartService } from '../cart.service';
   styleUrls: ['./flight-package.component.css']
 })
 export class FlightPackageComponent implements OnInit {
+
   @Input() private flights: any;
   @Input() private bookingType: any;
   @Input() private travelClass: any;
   @Input() private fareClass: any;
-  flight: any = {};
-  ticketData: Array<TicketProperties> = [];
-  cart: any = {};
-  data: any = [];
-  customerId = null;
+  public flight: any = {};
+  public ticketData: Array<TicketProperties> = [];
+  public cart: any = {};
+  public data: any = [];
+  public customerId = null;
 
   constructor(private flightService: FlightService,
     private authenticationService: AuthenticationService,

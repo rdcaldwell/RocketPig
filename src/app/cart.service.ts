@@ -5,13 +5,13 @@ import { FlightService } from './flight.service';
 @Injectable()
 export class CartService {
 
-  flights: any = [];
-  tickets: any = [];
-  games: any = [];
-  cart: any = {};
-  numberOfItems: number;
-  total: number;
-  totalMiles: number;
+  public flights: any = [];
+  public tickets: any = [];
+  public games: any = [];
+  public cart: any = {};
+  public numberOfItems: number;
+  public total: number;
+  public totalMiles: number;
 
   constructor(private http: Http, private flightService: FlightService) { }
 

@@ -9,7 +9,8 @@ import { GameService } from '../game.service';
 })
 export class PostGameComponent implements OnInit {
 
-  gameData: GameProperties = {
+  public filename = 'Choose file';
+  public gameData: GameProperties = {
     customerId: this.authenticationService.getCustomer()._id,
     description: '',
     itemName: '',
@@ -17,8 +18,6 @@ export class PostGameComponent implements OnInit {
     price: null,
     image: null
   };
-
-  filename = 'Choose file';
 
   constructor(public authenticationService: AuthenticationService, public gameService: GameService) { }
 

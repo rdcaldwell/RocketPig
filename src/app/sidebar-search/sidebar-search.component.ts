@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar-search.component.css']
 })
 export class SidebarSearchComponent implements OnInit {
-  departures: any = [];
-  destinations: any = [];
-  allFlights: any = [];
+
+  public departures: any = [];
+  public destinations: any = [];
+  public allFlights: any = [];
   public travelClasses: Array<string> = ['Economy', 'Business', 'First'];
   public stops: Array<Number> = [0, 1, 2, 3, 4];
   public fareClasses: Array<string> = ['Adult', 'Senior', 'Child'];

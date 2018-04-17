@@ -8,8 +8,8 @@ import { AuthenticationService, Customer } from '../authentication.service';
 })
 export class ProfileComponent implements OnInit {
 
-  customerProfile: Customer;
-  averageRating: number;
+  public customerProfile: Customer;
+  public averageRating: number;
 
   constructor(private authenticationService: AuthenticationService) { }
 

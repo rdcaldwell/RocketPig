@@ -14,6 +14,7 @@ export class SalesHistoryComponent implements OnInit {
   public totalSales = 0.00;
   public games = [];
   public bookingId: string;
+
   constructor(public gameService: GameService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {

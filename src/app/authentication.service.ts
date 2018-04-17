@@ -19,6 +19,9 @@ export interface Customer {
   milesToNextReward: number;
   hasActiveReward: boolean;
   ratings: Array<number>;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 }
 
 interface TokenResponse {

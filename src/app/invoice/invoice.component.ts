@@ -12,13 +12,13 @@ import { RatingChangeEvent } from 'angular-star-rating';
 })
 export class InvoiceComponent implements OnInit {
   // Gets customer profile from auth service
-  customerProfile = this.authenticationService.getCustomer();
-  bookingId: string;
-  booking: any = {};
-  flights: any = [];
-  tickets: any = [];
-  games: any = [];
-  rating: number;
+  public customerProfile = this.authenticationService.getCustomer();
+  public bookingId: string;
+  public booking: any = {};
+  public flights: any = [];
+  public tickets: any = [];
+  public games: any = [];
+  public rating: number;
 
   constructor(private authenticationService: AuthenticationService,
     private activatedRoute: ActivatedRoute,

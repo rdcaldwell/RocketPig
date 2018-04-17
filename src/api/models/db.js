@@ -1,8 +1,8 @@
 /* eslint no-console: 0 */
 const mongoose = require('mongoose');
 
-// const db = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@ds229458.mlab.com:29458/rocketpig`;
-const db = 'mongodb://localhost:27017';
+const db = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@ds229458.mlab.com:29458/rocketpig`;
+// const db = 'mongodb://localhost:27017';
 
 mongoose.connect(db);
 

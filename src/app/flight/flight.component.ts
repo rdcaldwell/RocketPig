@@ -6,8 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./flight.component.css']
 })
 export class FlightComponent implements OnInit {
+
   @Input() public flight: any;
-  airlineCode: string;
+  public airlineCode: string;
 
   constructor() { }
 

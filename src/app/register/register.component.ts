@@ -8,7 +8,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  credentials: TokenPayload = {
+
+  public usernameFound: boolean;
+  public emailFound: boolean;
+  public passwordCheck: boolean;
+  public credentials: TokenPayload = {
     email: '',
     username: '',
     password: '',
@@ -17,10 +21,6 @@ export class RegisterComponent {
     phoneNumber: null,
     miles: 0
   };
-
-  usernameFound: boolean;
-  emailFound: boolean;
-  passwordCheck: boolean;
 
   constructor(private authenticationService: AuthenticationService, private router: Router) { }
 

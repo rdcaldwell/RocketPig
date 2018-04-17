@@ -9,18 +9,19 @@ import { CartService } from '../cart.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent  {
-  credentials: TokenPayload = {
+export class LoginComponent {
+
+  public incorrectPassword = false;
+  public userNotFound = false;
+  public credentials: TokenPayload = {
     username: '',
     password: ''
   };
-  incorrectPassword = false;
-  userNotFound = false;
 
   constructor(public authenticationService: AuthenticationService,
-              private router: Router,
-              private flightService: FlightService,
-              private cartService: CartService) {}
+    private router: Router,
+    private flightService: FlightService,
+    private cartService: CartService) { }
 
   // Login user
   login() {

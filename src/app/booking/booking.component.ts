@@ -12,8 +12,13 @@ declare var elements: any;
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
-  packageData: any = {};
-  bookings: BookingProperties = {
+
+  public packageData: any = {};
+  public card: any;
+  public cardName: string;
+  public codeMessage: string;
+  public commission: number;
+  public bookings: BookingProperties = {
     customerId: '',
     rewardCode: '',
     total: 0,
@@ -29,10 +34,6 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
     zip: 0,
     totalMiles: 0,
   };
-  card: any;
-  cardName: string;
-  codeMessage: string;
-  commission: number;
 
   constructor(public flightService: FlightService,
     private router: Router,

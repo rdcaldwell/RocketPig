@@ -8,8 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./flights.component.css']
 })
 export class FlightsComponent implements OnInit {
-  flights: any = [];
-  title: string;
+
+  public flights: any = [];
+  public title: string;
 
   constructor(public flightService: FlightService,
     private router: Router) { }
