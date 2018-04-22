@@ -10,11 +10,6 @@
     "ng": "ng",
     "start": "ng build && node server.js",
     "build": "ng build --prod",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "angular": "ng serve --proxy-config proxy.json",
-    "node": "nodemon server-dev.js",
     "dev": "ng serve --proxy-config proxy.json | nodemon server-dev.js"
   },
   "private": true,
