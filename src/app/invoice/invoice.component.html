@@ -69,8 +69,8 @@
         <app-cart-game [game]="game"></app-cart-game>
       </div>
       <div class="col-md-2 star-wrapper" *ngIf="booking.customerId === customerProfile?._id">
-        <star-rating-comp [attr.tabindex]="-1" (ratingChange)="onRatingChange($event)" [labelPosition]="'top'" [labelText]="'Rate this seller:'"
-          [starType]="'svg'"></star-rating-comp>
+        <star-rating [attr.tabindex]="-1" (ratingChange)="onRatingChange($event)" [labelPosition]="'top'" [labelText]="'Rate this seller:'"
+          [starType]="'svg'"></star-rating>
         <button [disabled]="!rating" type="submit" class="btn star-btn btn-primary" (click)="submitRating(game.personId)">Submit</button>
       </div>
     </div>
