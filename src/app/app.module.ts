@@ -54,6 +54,7 @@ const routes: Routes = [
   { path: 'booking', component: BookingComponent },
   { path: ':username', component: ProfileComponent, canActivate: [AuthenticationService] },
   { path: 'invoice/:id', component: InvoiceComponent },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

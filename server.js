@@ -27,6 +27,10 @@ APP.use('/app/*', (req, res) => {
   res.sendFile(PATH.join(__dirname, 'dist/index.html'));
 });
 
+APP.get('*', (req, res) => {
+  res.status(404).redirect('/');
+});
+
 HTTP.createServer(APP).listen(PORT, () => console.log(`API running on localhost:${PORT}`));
 
 setInterval(() => {
