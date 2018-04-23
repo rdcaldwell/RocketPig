@@ -9,11 +9,14 @@ import { GameService } from '../game.service';
 export class GamesComponent implements OnInit {
 
   public games: any = [];
+  public loading: boolean;
 
   constructor(public gameService: GameService) { }
 
   ngOnInit() {
+    this.loading = true;
     this.gameService.getGames().subscribe(data => {
+      this.loading = false;
       this.games = data;
     });
   }

@@ -5,6 +5,9 @@
     </mat-form-field>
   </form>
   <div class="row">
+    <div class="text-center" *ngIf="loading">
+      <i class="fas fa-spinner fa-pulse fa-lg"></i>
+    </div>
     <ng-container *ngFor="let game of games">
       <div class="col-md-4" *ngIf="gameService.searchQuery === undefined || game.itemName.includes(gameService.searchQuery) || game.tags.includes(gameService.searchQuery)">
         <app-game [game]="game"></app-game>

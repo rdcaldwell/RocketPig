@@ -88,6 +88,7 @@ export class BookingComponent implements OnInit, AfterViewInit, OnDestroy {
       if (status === 'Reward code applied successfully') {
         // Applies discount if successful
         this.cartService.total *= .95;
+        this.bookings.total *= .95;
       }
     });
   }
