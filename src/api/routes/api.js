@@ -347,6 +347,7 @@ ROUTER.post('/flights', (req, res) => {
   const lowerDateBounds = new Date(searchParameters.departDate);
   const upperDateBounds = new Date(searchParameters.departDate);
   upperDateBounds.setDate(upperDateBounds.getDate() + 1);
+  lowerDateBounds.setHours(0, 0, 0, 0);
   // Route graph saves all flights with their paths
   const ROUTE = new GRAPH();
   const flightPackages = [];
